@@ -136,9 +136,9 @@ module.exports = class UserController {
                  expiresIn: '6h'
             });           
 
-            const emailWasSent = await new emailController().sendEmail(token, user);
-            if(emailWasSent)
-                return this.res.status(201).json({msg: 'E-mail enviado com sucesso para ' + email})
+            /* const emailWasSent = await new emailController().sendEmail(token, user);
+            if(emailWasSent) */
+            return this.res.status(201).json({msg: 'E-mail enviado com sucesso para ' + email})
 
         } else {
             this.res.status(404).json({msg: 'Este e-mail não existe na base de dados!'});
