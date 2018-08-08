@@ -136,8 +136,7 @@ module.exports = class UserController {
                  expiresIn: '6h'
             });           
 
-            /* const emailWasSent = await new emailController().sendEmail(token, user);
-            if(emailWasSent) */
+            await new emailController().sendEmail(token, user);
             return this.res.status(201).json({msg: 'E-mail enviado com sucesso para ' + email})
 
         } else {
