@@ -15,7 +15,7 @@ module.exports = class EmailController {
             }
         })
 
-        var url = `http://localhost:8080/new-password.html?token=${token}&id=${user.id}`;
+        var url = `https://login-senai5s.herokuapp.com/new-password.html?token=${token}&id=${user.id}`;
         const mailOptions = {
             from: 'SENAI 5S <suportesenai5s@gmail.com>',
             to: user.email, 
