@@ -1,5 +1,5 @@
 var nodemailer = require('nodemailer');
-
+console.log("#1");
 module.exports = class EmailController {
     constructor(req, res){
         this.req = req;
@@ -7,6 +7,7 @@ module.exports = class EmailController {
     }
 
     async sendEmail(token, user) {
+        console.log("#2", user, " " + token);
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -14,7 +15,7 @@ module.exports = class EmailController {
                 pass: 'projetoconsolidado'
             }
         })
-
+        console.log("#3");
         var url = `https://login-senai5s.herokuapp.com/new-password.html?token=${token}&id=${user.id}`;
         const mailOptions = {
             from: 'SENAI 5S <suportesenai5s@gmail.com>',
