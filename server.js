@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/views'));
-app.use(jwt({ secret: process.env.SECRET_KEY}).unless({path: ['/authenticate', '/verifyEmail?email', '/validateFirstAccess','/firstAccess','/newPassword/:token'] }));
+app.use(jwt({ secret: process.env.SECRET_KEY}).unless({path: ['/users', '/authenticate', '/verifyEmail?email', '/validateFirstAccess','/firstAccess','/newPassword/:token'] }));
 
 // routes
 app.use([usersRoutes, unitsRoutes, evaluationsRoutes, enviromentTypesRoutes, enviromentsRoutes, questionsRoutes]);
