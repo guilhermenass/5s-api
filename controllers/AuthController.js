@@ -49,6 +49,51 @@ module.exports = class AuthController {
         }    
     }
 
+    async authenticateApp(){
+        var email = this._req.body.email;
+        var password = this._req.body.password;
+
+        try {
+            const data = await models.User.findOne({
+                where: {
+                    email: email
+                }           
+            });
+             if(data){
+                var isAuthenticated =  bcrypt.compareSync(password, data.password);
+                 if(isAuthenticated){
+                    if(data.profile > 1){
+                        var user = ({
+                            id: data.id,
+                            email: email,
+                            userName: data.userName,
+                            name: data.name,
+                            profile: data.profile
+                        })
+                        var token = jwt.sign(user, process.env.SECRET_KEY, {
+                            expiresIn: '12h'
+                        });
+                        
+                        this._res.json({
+                            token: token,
+                            isAuth: true,
+                            profile: data.profile
+                        });
+                     }else {
+                        this._res.status(401).send("Usuário não permitido");
+                     }
+                    
+                }else
+                    this._res.status(401).send("Dados incorretos");
+                
+            } else 
+                this._res.status(401).send("Usuário não encontrado");
+			
+        } catch(err) {
+            this._res.status(500).send("Ocorreu um erro ao tentar realizar o login" + err);
+        }    
+    }
+
     async validateFirstAccess(){
         var email = this._req.body.email;
         var cbFirstAccess = this._req.body.cbFirstAccess;
