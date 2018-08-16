@@ -8,6 +8,8 @@ const mysql = require('mysql')
 const main = require('./routes/main')
 var jwt = require('express-jwt')
 
+console.log(process.env.PASSWORD);
+
 const usersRoutes = require('./routes/user-routes')
 const unitsRoutes = require('./routes/unit-routes')
 const enviromentTypesRoutes = require('./routes/enviroment-types-routes')
