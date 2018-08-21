@@ -10,6 +10,11 @@ router.get('/audits', function(req, res) {
     new auditController(req, res).load();
 })
 
+router.get('/audits/:responsibleId', function(req, res){
+    console.log('caiu na rota');
+    new auditController(req, res).loadByAppraiserId(req.body)
+})
+
 router.put('/audits/:id', function(req, res){
     new auditController(req, res).update(req.body);
 })

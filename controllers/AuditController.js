@@ -20,6 +20,23 @@ module.exports = class AuditController {
         });
     }
 
+    loadByAppraiserId() {
+        console.log('caiu na controller');
+        models.Audit.findAll({
+            where: {
+                current_responsible: this.req.params.id,
+            }
+        })
+        .then(audits => {
+            return this.res.json(audits);
+        })
+        .catch((error) => {
+            return this.res.status(400).json({
+                errorDetails: error
+            })
+        })
+    }
+
     save(audit){
         let auditToSave = this.mountAudits(audit);
         
