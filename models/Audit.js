@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {  
-    const Evaluation = sequelize.define('Evaluation', {
+    const Audit = sequelize.define('Audit', {
 		id: {
 			primaryKey: true,
             type: DataTypes.INTEGER,
@@ -32,20 +32,24 @@ module.exports = (sequelize, DataTypes) => {
 
         description: {
             type: DataTypes.STRING
-        }		
+        },
+
+        current_responsible: {
+            type: DataTypes.INTEGER
+        }
     },  
     {
         classMethods: {
             associate : function(models) {
             },
         },
-        tableName: 'evaluations' 
+        tableName: 'audits' 
     });
 
-    Evaluation.associate = (models) => {
-        Evaluation.belongsTo(models.User, { foreignKey: 'users_id'});
-        Evaluation.belongsTo(models.Enviroment, { foreignKey: 'enviroments_id'});
+    Audit.associate = (models) => {
+        Audit.belongsTo(models.User, { foreignKey: 'users_id'});
+        Audit.belongsTo(models.Enviroment, { foreignKey: 'enviroments_id'});
     };
 
-    return Evaluation;
+    return Audit;
   };
