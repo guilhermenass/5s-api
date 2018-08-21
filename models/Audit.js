@@ -43,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
             associate : function(models) {
             },
         },
-        tableName: 'audits' 
+        tableName: 'audits',
+        timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
     });
 
     Audit.associate = (models) => {

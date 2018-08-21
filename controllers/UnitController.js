@@ -1,14 +1,16 @@
 var models = require('../models');
 var db = require('../models/index');
+var genericDAO = require('../dao/GenericDAO')
 
 module.exports = class UnitController {
     constructor(req, res){
         this.req = req;
         this.res = res;
+        this.dao = new genericDAO();
     }
 
     save(unit){
-        models.Unit.create(unit)    
+        this.dao.save(models.Unit, unit)
         .then(res => {
             return this.res.status(201).json({
                 type: 'success', message: 'Unidade salva com sucesso'
@@ -22,7 +24,7 @@ module.exports = class UnitController {
     }
 
     load(){ 
-        models.Unit.findAll({})
+        this.dao.load(models.Unit)
         .then(units => {
             return this.res.json(units);
         })
@@ -34,10 +36,7 @@ module.exports = class UnitController {
     }
 
     update(unit){
-        return models.Unit.update(unit,
-        { 
-            where: { id: unit.id }
-        })
+        this.dao.update(models.Unit, unit)
         .then(res => {
             return this.res.status(200).json({type: 'success', message: 'Unidade salva com sucesso!'})
         })
@@ -49,11 +48,7 @@ module.exports = class UnitController {
     }
 
     remove(){
-        models.Unit.destroy({
-            where: {    
-                id: this.req.params.id  
-            }
-        })
+        this.dao.remove(models.Unit, this.req.params.id)
         .then((deletedRecord) => {
             if(deletedRecord)
                 return this.res.status(200).json({
@@ -71,6 +66,8 @@ module.exports = class UnitController {
         })
     }
 
+    /* retorna todos as unidades de acordo com o tipo de ambiente */
+    // TODO: Refatorar código para ficar em um DAO
     getUnitByEnviromentType() {
         db.sequelize.query(
             "select distinct u.id, u.name from enviroments e " +

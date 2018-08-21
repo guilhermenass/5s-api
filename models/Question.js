@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
             associate : function(models) { },
         },
 
-        tableName: 'questions' 
-        
+        tableName: 'questions',
+        timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
     });
     
+
 
     return Question;
 };

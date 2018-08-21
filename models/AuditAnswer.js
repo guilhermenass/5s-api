@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
             associate : function(models) { },
         },
 
-        tableName: 'audit_answers' 
-        
+        tableName: 'audit_answers',
+        timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
     });
 
     AuditAnswer.associate = (models) => {

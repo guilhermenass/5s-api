@@ -54,8 +54,6 @@ module.exports = class UserController {
         if(user.password) {
             var encryptedPassword = this.generateHash(user.password); 
 
-            console.log('encrypt', encryptedPassword)
-
             return models.User.update(
             { 
                 password: encryptedPassword 

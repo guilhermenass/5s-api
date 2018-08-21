@@ -1,15 +1,15 @@
 var models = require('../models');
+var genericDAO = require('../dao/GenericDAO');
 
 module.exports = class AuditController {
     constructor(req, res) {
         this.req = req;
         this.res = res;
+        this.dao = new genericDAO();
     }
 
     load() {
-        models.Audit.findAll({
-            include: [models.User, models.Enviroment]
-        })
+        this.dao.load(models.Audit, [].push(models.User, models.Enviroment))
         .then(audits => {
             return this.res.json(audits);
         })
@@ -22,7 +22,6 @@ module.exports = class AuditController {
 
     save(audit){
         let auditToSave = this.mountAudits(audit);
-        
         models.Audit.bulkCreate(auditToSave)
         .then(res => {
             return this.res.status(201).json({
@@ -46,7 +45,8 @@ module.exports = class AuditController {
                 dueDate: audit.dueDate,
                 title: audit.title,
                 status: audit.status,
-                description: audit.description
+                description: audit.description,
+                current_responsible: audit.users_id
             })
         })
 

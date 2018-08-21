@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
             associate : function(models) { },
         },
 
-        tableName: 'enviroment_types' 
+        tableName: 'enviroment_types',
+        timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
     });
 
 
