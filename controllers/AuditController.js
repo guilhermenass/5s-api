@@ -1,17 +1,17 @@
 var models = require('../models');
 
-module.exports = class EvaluationController {
+module.exports = class AuditController {
     constructor(req, res) {
         this.req = req;
         this.res = res;
     }
 
     load() {
-        models.Evaluation.findAll({
+        models.Audit.findAll({
             include: [models.User, models.Enviroment]
         })
-        .then(evaluations => {
-            return this.res.json(evaluations);
+        .then(audits => {
+            return this.res.json(audits);
         })
         .catch((error) => {
             return this.res.status(500).json({
@@ -20,13 +20,13 @@ module.exports = class EvaluationController {
         });
     }
 
-    save(evaluation){
-        let evaluationToSave = this.mountEvaluations(evaluation);
+    save(audit){
+        let auditToSave = this.mountAudits(audit);
         
-        models.Evaluation.bulkCreate(evaluationToSave)
+        models.Audit.bulkCreate(auditToSave)
         .then(res => {
             return this.res.status(201).json({
-                type: 'success', message: 'Avaliação salva com sucesso!'
+                type: 'success', message: 'Auditoria salva com sucesso!'
             })
         })
         .catch((error) => {
@@ -36,31 +36,31 @@ module.exports = class EvaluationController {
         })
     }
 
-    mountEvaluations(evaluation) {
-        let evaluationToSave = [];
-        evaluation["enviroments_id"].forEach(enviromentId => {
-            evaluationToSave.push({
-                users_id: evaluation.users_id,
+    mountAudits(audit) {
+        let auditToSave = [];
+        audit["enviroments_id"].forEach(enviromentId => {
+            auditToSave.push({
+                users_id: audit.users_id,
                 enviroments_id: enviromentId,
-                createDate: evaluation.createDate,
-                dueDate: evaluation.dueDate,
-                title: evaluation.title,
-                status: evaluation.status,
-                description: evaluation.description
+                createDate: audit.createDate,
+                dueDate: audit.dueDate,
+                title: audit.title,
+                status: audit.status,
+                description: audit.description
             })
         })
 
-        return evaluationToSave;
+        return auditToSave;
     }
 
-    update(evaluation){
-        return models.Evaluation.update(evaluation,
+    update(audit){
+        return models.Audit.update(audit,
         { 
-            where: {id: evaluation.id}
+            where: {id: audit.id}
         })
         .then(res => {
             return this.res.status(200).json({
-                type: 'success', message: 'Avaliação salva com sucesso!'
+                type: 'success', message: 'Auditoria salva com sucesso!'
             })
         })
         .catch((error) => {
@@ -71,7 +71,7 @@ module.exports = class EvaluationController {
     }
 
     remove() {
-        models.Evaluation.destroy({
+        models.Audit.destroy({
             where: {    
                 id: this.req.params.id  
             }
@@ -79,7 +79,7 @@ module.exports = class EvaluationController {
         .then((deletedRecord) => {
             if(deletedRecord)
                 return this.res.status(200).json({
-                    type: 'success', message: "Removido com sucesso!"
+                    type: 'success', message: "Exclusão realizada com sucesso!"
                 }); 
             else
                 return this.res.status(404).json({
