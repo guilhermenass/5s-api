@@ -43,7 +43,8 @@ module.exports = (sequelize, DataTypes) => {
             associate : function(models) {
             },
         },
-        tableName: 'audits' 
+        tableName: 'audits',
+        timestamps: false
     });
 
     Audit.associate = (models) => {

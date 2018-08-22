@@ -1,4 +1,7 @@
 var models = require('../models');
+var db = require('../models/index');
+const op = db.Sequelize.Op;
+
 
 module.exports = class AuditController {
     constructor(req, res) {
@@ -20,11 +23,14 @@ module.exports = class AuditController {
         });
     }
 
-    loadByAppraiserId() {
-        console.log('caiu na controller');
+    loadByAppraiserId(userId) {
+        console.log('sarah linda', userId)
         models.Audit.findAll({
             where: {
-                current_responsible: this.req.params.id,
+                [op.or]: [
+                    {users_id: userId},
+                    {current_responsible: userId}
+                ]
             }
         })
         .then(audits => {
