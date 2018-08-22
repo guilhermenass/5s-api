@@ -22,8 +22,9 @@ module.exports = class AuditController {
 
     save(audit){
         let auditToSave = this.mountAudits(audit);
-        models.Audit.bulkCreate(auditToSave)
-        .then(res => {
+
+        this.dao.bulkCreate(models.Audit, auditToSave)
+        .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Auditoria salva com sucesso!'
             })
@@ -32,6 +33,39 @@ module.exports = class AuditController {
             return this.res.status(500).json({
                 type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
             })
+        })
+    }
+
+    update(audit){
+        this.dao.update(models.Audit, audit)
+        .then(() => {
+            return this.res.status(200).json({
+                type: 'success', message: 'Auditoria salva com sucesso!'
+            })
+        })
+        .catch((error) => {
+            return this.res.status(500).json({
+                type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
+            });
+        });
+    }
+
+    remove() {
+        this.dao.remove(models.Audit, this.req.params.id)
+        .then((deletedRecord) => {
+            if(deletedRecord)
+                return this.res.status(200).json({
+                    type: 'success', message: "Exclusão realizada com sucesso!"
+                }); 
+            else
+                return this.res.status(404).json({
+                    type: 'error', message: "Registro não encontrado!"
+                })        
+        })
+        .catch((error) => {
+            return this.res.status(500).json({
+                type: 'error', message: "Erro de servidor!", errorDetails: error
+            }); 
         })
     }
 
@@ -49,47 +83,6 @@ module.exports = class AuditController {
                 current_responsible: audit.users_id
             })
         })
-
         return auditToSave;
-    }
-
-    update(audit){
-        return models.Audit.update(audit,
-        { 
-            where: {id: audit.id}
-        })
-        .then(res => {
-            return this.res.status(200).json({
-                type: 'success', message: 'Auditoria salva com sucesso!'
-            })
-        })
-        .catch((error) => {
-            return this.res.status(500).json({
-                type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
-            });
-        });
-    }
-
-    remove() {
-        models.Audit.destroy({
-            where: {    
-                id: this.req.params.id  
-            }
-        })
-        .then((deletedRecord) => {
-            if(deletedRecord)
-                return this.res.status(200).json({
-                    type: 'success', message: "Exclusão realizada com sucesso!"
-                }); 
-            else
-                return this.res.status(404).json({
-                    type: 'error', message: "Registro não encontrado!"
-                })        
-        })
-        .catch((error) => {
-            return this.res.status(500).json({
-                type: 'error', message: "Erro de servidor!", errorDetails: error
-            }); 
-        })
     }
 }

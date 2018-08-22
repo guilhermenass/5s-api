@@ -1,12 +1,13 @@
 var jwt = require("jsonwebtoken");
-var mysql = require('mysql')
 var bcrypt = require('bcrypt');
 var models  = require('../models');
+var genericDAO = require('../dao/GenericDAO');
 
 module.exports = class AuthController {
     constructor(req, res){
         this._req = req;
         this._res = res;
+        this.dao = new genericDAO();
     }
 
     async authenticate(){
@@ -14,12 +15,8 @@ module.exports = class AuthController {
         var password = this._req.body.password;
 
         try {
-            const data = await models.User.findOne({
-                where: {
-                    email: email
-                }           
-            });
-
+            const data = await this.dao.loadByEmail(models.User, email) 
+            
             if(data){
                var isValid =  bcrypt.compareSync(password, data.password);
                 if(isValid){
@@ -54,11 +51,7 @@ module.exports = class AuthController {
         var password = this._req.body.password;
 
         try {
-            const data = await models.User.findOne({
-                where: {
-                    email: email
-                }           
-            });
+            const data = await await this.dao.loadByEmail(models.User, email)
              if(data){
                 var isAuthenticated =  bcrypt.compareSync(password, data.password);
                  if(isAuthenticated){
@@ -96,14 +89,9 @@ module.exports = class AuthController {
 
     async validateFirstAccess(){
         var email = this._req.body.email;
-        var cbFirstAccess = this._req.body.cbFirstAccess;
 
         try {
-            const data = await models.User.findOne({
-                where: {
-                    email: email
-                }           
-            });
+            const data = await this.dao.loadByEmail(models.User, email)
 
             if(data){
                var isAuthenticated =  bcrypt.compareSync('newPasswordFirstAccess', data.password);

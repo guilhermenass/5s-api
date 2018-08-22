@@ -1,6 +1,6 @@
 var models = require('../models');
-var db = require('../models/index');
-var genericDAO = require('../dao/GenericDAO')
+var genericDAO = require('../dao/GenericDAO');
+var unitDAO = require('../dao/UnitDAO');
 
 module.exports = class UnitController {
     constructor(req, res){
@@ -11,7 +11,7 @@ module.exports = class UnitController {
 
     save(unit){
         this.dao.save(models.Unit, unit)
-        .then(res => {
+        .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Unidade salva com sucesso'
             })
@@ -37,7 +37,7 @@ module.exports = class UnitController {
 
     update(unit){
         this.dao.update(models.Unit, unit)
-        .then(res => {
+        .then(() => {
             return this.res.status(200).json({type: 'success', message: 'Unidade salva com sucesso!'})
         })
         .catch((err) => {
@@ -66,16 +66,8 @@ module.exports = class UnitController {
         })
     }
 
-    /* retorna todos as unidades de acordo com o tipo de ambiente */
-    // TODO: Refatorar código para ficar em um DAO
     getUnitByEnviromentType() {
-        db.sequelize.query(
-            "select distinct u.id, u.name from enviroments e " +
-            "inner join enviroment_types_has_questions ethq on ethq.enviroment_types_id = e.enviroment_types_id " +
-            "inner join units u on u.id = e.units_id " +
-            "where ethq.questions_id = " + this.req.params.questionId,
-            { type: db.sequelize.QueryTypes.SELECT }
-        )
+        new unitDAO().loadUnitByEnviromentType()     
         .then(unit => {
             return this.res.status(200).json(unit[0].id) // retorna sempre uma unidade
         })
