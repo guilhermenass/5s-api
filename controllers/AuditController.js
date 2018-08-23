@@ -1,6 +1,5 @@
 var models = require('../models');
-var db = require('../models/index');
-const op = db.Sequelize.Op;
+var auditDAO = require('../dao/AuditDAO')
 var genericDAO = require('../dao/GenericDAO');
 
 module.exports = class AuditController {
@@ -11,7 +10,7 @@ module.exports = class AuditController {
     }
 
     load() {
-        this.dao.load(models.Audit, [].push(models.User, models.Enviroment))
+        new auditDAO().load()
         .then(audits => {
             return this.res.json(audits);
         })
