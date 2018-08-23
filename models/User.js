@@ -19,7 +19,8 @@
         },
     },  
     {
-        tableName: 'users' 
+        tableName: 'users',
+        timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
     });
     
     return User;
