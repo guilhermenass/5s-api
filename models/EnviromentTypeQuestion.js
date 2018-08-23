@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     
-    tableName: 'enviroment_types_has_questions' 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    tableName: 'enviroment_types_has_questions',
+    timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
     });
 
     EnviromentTypeQuestion.associate = (models) => {

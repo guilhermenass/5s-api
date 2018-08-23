@@ -11,7 +11,7 @@ module.exports = class EmailController {
             service: 'gmail',
             auth: {
                 user: 'suportesenai5s@gmail.com',
-                pass: 'projetoconsolidado'
+                pass: process.env.PASSWORD
             }
         })
 

@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
 
+        /* se for null, é porque a auditoria já foi concluida */
         current_responsible: {
             type: DataTypes.INTEGER
         }
@@ -43,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
             associate : function(models) {
             },
         },
-        tableName: 'audits' 
+        tableName: 'audits',
+        timestamps: false
     });
 
     Audit.associate = (models) => {

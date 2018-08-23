@@ -1,15 +1,17 @@
 var models = require('../models');
-var db = require('../models/index')
+var db = require('../models/index');
+var genericDAO = require('../dao/GenericDAO');
 
 module.exports = class EnviromentTypeController {
     constructor(req, res){
         this.req = req;
         this.res = res;
+        this.dao = new genericDAO();
     }
 
     save(enviromentType){
-        models.EnviromentType.create(enviromentType)    
-        .then(res => {
+        this.dao.save(models.EnviromentType, enviromentType)
+        .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Tipo de ambiente salvo com sucesso!'
             })
@@ -21,8 +23,8 @@ module.exports = class EnviromentTypeController {
         });
     }
 
-    load(){ 
-        models.EnviromentType.findAll({})
+    load(){
+        this.dao.load(models.EnviromentType) 
         .then(enviromentTypes => {
             return this.res.json(enviromentTypes);
         })
@@ -32,11 +34,8 @@ module.exports = class EnviromentTypeController {
     }
 
     update(enviromentType){
-        return models.EnviromentType.update(enviromentType,
-        { 
-            where: { id: enviromentType.id }
-        })
-        .then(res => {
+        this.dao.update(models.EnviromentType, enviromentType)
+        .then(() => {
             return this.res.status(200).json({
                 type: 'success', message: 'Tipo de ambiente salvo com sucesso!'
             })
@@ -48,28 +47,8 @@ module.exports = class EnviromentTypeController {
         });
     }
 
-    loadEnviromentsTypeByUnit() {
-         db.sequelize.query(
-             "select distinct et.name, et.id from enviroments e " +
-             "inner join enviroment_types et on et.id = e.enviroment_types_id " +
-             "where e.units_id = " + this.req.params.unitId,
-             { type: db.sequelize.QueryTypes.SELECT })
-        .then(enviroments => {
-            return this.res.status(200).json(enviroments)
-        })
-        .catch((error) =>{
-            return this.res.status(500).json({
-                type: 'error', message: "Erro de servidor", errorDetails: error
-            })
-        })
-    }
-
     remove(){
-        models.EnviromentType.destroy({
-            where: {
-                id: this.req.params.id  
-            }
-        })
+        this.dao.remove(models.EnviromentType, this.req.params.id )
         .then((deletedRecord) => {
             if(deletedRecord)
                 return this.res.status(200).json({
@@ -95,11 +74,27 @@ module.exports = class EnviromentTypeController {
                 questions_id: questionId 
             }
         })
-        .then(res => {
+        .then(() => {
             return this.res.status(200).json({type: 'success', msg: 'Tipos de ambientes foram removidos!'});
         })
         .catch((error) =>{
             return this.res.status(500).json({errorDetails: error})
         })
     }
+
+    loadEnviromentsTypeByUnit() {
+        db.sequelize.query(
+            "select distinct et.name, et.id from enviroments e " +
+            "inner join enviroment_types et on et.id = e.enviroment_types_id " +
+            "where e.units_id = " + this.req.params.unitId,
+            { type: db.sequelize.QueryTypes.SELECT })
+       .then(enviroments => {
+           return this.res.status(200).json(enviroments)
+       })
+       .catch((error) =>{
+           return this.res.status(500).json({
+               type: 'error', message: "Erro de servidor", errorDetails: error
+           })
+       })
+   }
 }
