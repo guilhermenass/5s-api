@@ -1,6 +1,6 @@
 module.exports = class GenericDAO {
 
-    constructor(){}
+    constructor() {}
 
     /* método genérico de save */
     save(model, entity) {
@@ -35,7 +35,19 @@ module.exports = class GenericDAO {
             attributes: { exclude: ['password'] }
         })
     }
-    
+
+    /* retorna as pendências de acordo com o id do responsável */
+    loadByAppraiserId(model, userId) {
+        model.findAll({
+            where: {
+                [op.or]: [ 
+                    {users_id: userId},
+                    {current_responsible: userId}
+                ]
+            }
+        })
+    }
+        
     /* remove um determinado registro de acordo com o id */
     remove(model, id) {
         return model.destroy({ where: { id: id} })

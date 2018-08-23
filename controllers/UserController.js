@@ -2,7 +2,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require('bcrypt-nodejs')
 var models  = require('../models');
 var emailController = require('./EmailController');
-var genericDAO = require('../dao/genericDAO');
+var genericDAO = require('../dao/GenericDAO')
 
 module.exports = class UserController {
     constructor(req, res){
