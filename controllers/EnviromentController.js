@@ -1,14 +1,16 @@
 var models = require('../models');
+var genericDAO = require('../dao/GenericDAO');
 
 module.exports = class EnviromentController {
     constructor(req, res){
         this.req = req;
         this.res = res;
+        this.dao = new genericDAO();
     }
 
     save(enviroment){
-        models.Enviroment.create(enviroment)    
-        .then(res => {
+        this.dao.save(models.Enviroment, enviroment)
+        .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Ambiente salvo com sucesso!'
             })
@@ -21,9 +23,7 @@ module.exports = class EnviromentController {
     }
 
     load(){ 
-        models.Enviroment.findAll({
-            include: [models.Unit, models.User, models.EnviromentType]
-        })
+        this.dao.load(models.Enviroment, [].push(models.Unit, models.User, models.EnviromentType))
         .then(enviroments => {
             return this.res.json(enviroments);  
         })
@@ -33,11 +33,8 @@ module.exports = class EnviromentController {
     }
 
     update(enviroment){
-        return models.Enviroment.update(enviroment,
-        { 
-            where: { id: enviroment.id }
-        })
-        .then(res => {
+        this.dao.update(models.Enviroment, enviroment)
+        .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Ambiente salvo com sucesso!'
             })
@@ -50,11 +47,7 @@ module.exports = class EnviromentController {
     }
 
     remove(){
-        models.Enviroment.destroy({
-            where: {
-                id: this.req.params.id  
-            }
-        })
+        this.dao.remove(models.Enviroment, this.req.params.id)
         .then((deletedRecord) => {
             if(deletedRecord)
                 return this.res.status(200).json({

@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         
         },
       },
-      tableName: 'units' 
+      tableName: 'units',
+      timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
     });
     
     return Unit;
