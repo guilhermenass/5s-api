@@ -13,7 +13,11 @@ module.exports = class GenericDAO {
     }
     
     /* método genérico para retornar todos os dados de acordo com o model e sem condicionais */
+<<<<<<< HEAD
     load(model, modelUSer) {
+=======
+    load(model) {
+>>>>>>> 30aef2ad81a1e3ad85eb2b84265b33189ae061d4
         return model.findAll({})
     }
 
