@@ -11,7 +11,8 @@ module.exports = class AuditController {
     }
 
     load() {
-        this.dao.load(models.Audit, [].push(models.User, models.Enviroment))
+        console.log(models.User)
+        this.dao.load(models.Audit, models.User)
         .then(audits => {
             return this.res.json(audits);
         })
