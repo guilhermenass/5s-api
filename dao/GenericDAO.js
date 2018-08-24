@@ -39,7 +39,7 @@ module.exports = class GenericDAO {
 
     /* retorna as pendências de acordo com o id do responsável */
     loadByAppraiserId(model, userId) {
-        model.findAll({
+        return model.findAll({
             where: {
                 [op.or]: [ 
                     {users_id: userId},
