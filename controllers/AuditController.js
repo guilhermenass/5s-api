@@ -10,12 +10,7 @@ module.exports = class AuditController {
     }
 
     load() {
-<<<<<<< HEAD
-        console.log(models.User)
-        this.dao.load(models.Audit, models.User)
-=======
         new auditDAO().load()
->>>>>>> 30aef2ad81a1e3ad85eb2b84265b33189ae061d4
         .then(audits => {
             return this.res.json(audits);
         })
