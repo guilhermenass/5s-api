@@ -1,5 +1,5 @@
 var models = require('../models');
-
+var genericDAO = require('../dao/GenericDAO')
 
 module.exports = class Question {
     constructor(req, res){
