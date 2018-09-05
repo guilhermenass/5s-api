@@ -1,5 +1,6 @@
 var models = require('../models');
-var genericDAO = require('../dao/GenericDAO')
+var genericDAO = require('../dao/GenericDAO');
+var questionDAO = require('../dao/QuestionDAO');
 
 module.exports = class Question {
     constructor(req, res){
@@ -92,5 +93,20 @@ module.exports = class Question {
         .catch((error) => {
             return this.res.status(500).json({errorDetails: error});
         })
+    }
+
+    getQuestionsByEnviromentTypeId(enviromentTypeId) {
+        new questionDAO().getQuestionsByEnviromentTypeId(models, enviromentTypeId)
+        .then(questions => {
+            if(questions.length == 0) 
+                return this.res.status(404).json({msg: "Nenhuma pergunta foi cadastrada para este tipo de ambiente"});
+            else
+                return this.res.status(200).json(questions);
+        })
+        .catch((error) => {
+            return this.res.status(500).json({errorDetails: error});
+        })
+        
+        
     }
 }
