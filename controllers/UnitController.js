@@ -67,7 +67,7 @@ module.exports = class UnitController {
     }
 
     getUnitByEnviromentType() {
-        new unitDAO().loadUnitByEnviromentType()     
+        new unitDAO().loadUnitByEnviromentType(this.req.params.questionId)     
         .then(unit => {
             return this.res.status(200).json(unit[0].id) // retorna sempre uma unidade
         })
