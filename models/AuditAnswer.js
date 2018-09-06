@@ -1,19 +1,17 @@
 module.exports = (sequelize, DataTypes) => {  
     
-    var Question = sequelize.define('Question', {
+    var AuditAnswer = sequelize.define('AuditAnswer', {
         id: {
 			primaryKey: true,
             type: DataTypes.INTEGER,
             autoIncrement: true
         },
-        title: {
-            type: DataTypes.STRING
-        },
-        sense: {
+        audits_id: {
             type: DataTypes.INTEGER
         },
-        description: {
-            type: DataTypes.STRING
+
+        created_date: {
+            type: DataTypes.DATEONLY
         }
     },
     {
@@ -21,11 +19,15 @@ module.exports = (sequelize, DataTypes) => {
             associate : function(models) { },
         },
 
-        tableName: 'questions',
+        tableName: 'audit_answers',
         timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
     });
+
+    AuditAnswer.associate = (models) => {
+        AuditAnswer.belongsTo(models.Audit, { foreignKey: 'audits_id'});
+        AuditAnswer.belongsTo(models.Question, { foreignKey: 'questions_id'});
+    };
     
 
-
-    return Question;
+    return AuditAnswer;
 };

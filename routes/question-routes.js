@@ -18,6 +18,10 @@ router.get('/associate/:id', function(req, res){
     new questionController(req, res).getRelatedItems(req.params);
 })
 
+router.get('/questions/enviromentType/:enviromentTypeId', function(req, res){
+    new questionController(req, res).getQuestionsByEnviromentTypeId(req.params.enviromentTypeId);
+})
+
 router.put('/questions/:id', function(req, res){
     new questionController(req, res).update(req.body);
 })

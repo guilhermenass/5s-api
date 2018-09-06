@@ -1,20 +1,20 @@
 var jwt = require("jsonwebtoken");
-var mysql = require('mysql')
 var bcrypt = require('bcrypt-nodejs')
 var models  = require('../models');
 var emailController = require('./EmailController');
+var genericDAO = require('../dao/GenericDAO')
 
 module.exports = class UserController {
     constructor(req, res){
         this.req = req;
         this.res = res;
+        this.dao = new genericDAO();
     }
 
     save(user){
         user.password = this.generateHash(user.password);        
-
-        models.User.create(user)    
-        .then(res => {
+        this.dao.save(models.User, user)
+        .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Usuário salvo com sucesso!'
             })
@@ -27,17 +27,13 @@ module.exports = class UserController {
     }
 
     update(user){
-
         if(user.password)
             user.password = this.generateHash(user.password); 
         else
             delete user.password
 
-        return models.User.update(user,
-        { 
-            where: { id: user.id }
-        })
-        .then(res => {
+        this.dao.update(models.User, user)
+        .then(() => {
             return this.res.status(200).json({
                 type: 'success', message: 'Usuário salvo com sucesso'
             })
@@ -54,16 +50,9 @@ module.exports = class UserController {
         if(user.password) {
             var encryptedPassword = this.generateHash(user.password); 
 
-            console.log('encrypt', encryptedPassword)
-
-            return models.User.update(
-            { 
-                password: encryptedPassword 
-            },
-            { 
-                where: { id: user.id }
-            })
-            .then(res => {
+            // model, userId, password
+            this.dao.updatePassword(models.User, user.id, encryptedPassword)
+            .then(() => {
                 return this.res.status(200).json({
                     type: 'success', message: 'Senha alterada com sucesso'
                 })
@@ -76,10 +65,8 @@ module.exports = class UserController {
         }
     }
     
-    load(){ 
-        models.User.findAll({
-            attributes: { exclude: ['password'] }
-        })
+    load(){
+        this.dao.loadWithoutPassword(models.User)
         .then(users => {
             return this.res.json(users);
         })
@@ -89,11 +76,7 @@ module.exports = class UserController {
     }
     
     remove(){
-        models.User.destroy({
-            where: {
-                id: this.req.params.id  
-            }
-        })
+        this.dao.remove(models.User, this.req.params.id)
         .then((deletedRecord) => {
             if(deletedRecord)
                 return this.res.status(200).json({
@@ -120,11 +103,9 @@ module.exports = class UserController {
     async verifyEmail(){
         let email = this.req.query.email;
 
-        let data = await models.User.findOne({
-            where: {
-                email: email
-            }
-        })
+        this.dao.loadByEmail(models.User, email)
+        let data = await this.dao.loadByEmail(models.User, email)
+
         if(data){
             let user = ({
                 id: data.id,
@@ -149,17 +130,12 @@ module.exports = class UserController {
 
     async validateFirstAccess(){
         var email = this.req.body.email;
-        var cbFirstAccess = this.req.body.cbFirstAccess;
 
         try {
-            const data = await models.User.findOne({
-                where: {
-                    email: email
-                }           
-            });
+            const data = await this.dao.loadByEmail(models.User, email)
 
             if(data){
-               var isAuthenticated =  bcrypt.compareSync('newPasswordFirstAccess', data.password);
+               var isAuthenticated = bcrypt.compareSync('newPasswordFirstAccess', data.password);
 
                 if(isAuthenticated){
                     var user = ({
