@@ -27,7 +27,7 @@ module.exports = class AuthController {
                         profile: data.profile
                     })
                     var token = jwt.sign(user, process.env.SECRET_KEY, {
-                        expiresIn: '40d'
+                        expiresIn: '40 days'
                     });
                     
                     this._res.json({
@@ -64,7 +64,7 @@ module.exports = class AuthController {
                             profile: data.profile
                           })
                         var token = jwt.sign(user, process.env.SECRET_KEY, {
-                            expiresIn: '40d'
+                            expiresIn: '40 days'
                         });
                         
                         this._res.json({
@@ -95,7 +95,6 @@ module.exports = class AuthController {
 
             if(data){
                var isAuthenticated =  bcrypt.compareSync('newPasswordFirstAccess', data.password);
-
                 if(isAuthenticated){
                     var user = ({
                         id: data.id,
