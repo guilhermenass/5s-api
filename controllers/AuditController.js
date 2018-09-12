@@ -34,9 +34,9 @@ module.exports = class AuditController {
     }
 
     save(audit){
-        let auditToSave = this.mountAudits(audit);
-
-        this.dao.bulkCreate(models.Audit, auditToSave)
+        console.log()
+        let evaluationDto = this.mountAudits(audit);
+        this.dao.bulkCreate(models.Audit, evaluationDto)
         .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Auditoria salva com sucesso!'
