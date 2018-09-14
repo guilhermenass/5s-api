@@ -6,22 +6,38 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
 
+        /**
+         * Ambiente que será avaliado
+         */
         enviroments_id: {
             type: DataTypes.INTEGER
         },
 
+        /** 
+         * Id da auditoria da avaliação criada
+         */
         audits_id: {
             type: DataTypes.INTEGER
         },
 
+        /** 
+         * Id correspondente ao usuario que irá executar a avaliação
+         */
         users_id: {
             type: DataTypes.INTEGER
         },
 
+        /** (Campo referente a data de finalização da avaliação)
+         *  Será preenchida com valor nulo na criação pelo webapp.
+         *  Quando for finalizada, o valor desse campo será a data que a avaliação foi finalizada. */
         date: {
-            type: DataTypes.DATEONLY
+            type: DataTypes.DATEONLY,
         },
 
+        /** Status da avaliação
+         * 0 = pendente
+         * 1 = concluida
+         */
         status: {
             type: DataTypes.INTEGER
         },

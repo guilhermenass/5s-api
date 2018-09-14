@@ -12,6 +12,7 @@ module.exports = class AuditController {
     load() {
         new auditDAO().load()
         .then(audits => {
+            
             return this.res.json(audits);
         })
         .catch((error) => {
@@ -34,12 +35,10 @@ module.exports = class AuditController {
     }
 
     save(audit){
-        console.log()
-        let evaluationDto = this.mountAudits(audit);
-        this.dao.bulkCreate(models.Audit, evaluationDto)
-        .then(() => {
+        this.dao.save(models.Audit, audit)
+        .then((res) => {
             return this.res.status(201).json({
-                type: 'success', message: 'Auditoria salva com sucesso!'
+                type: 'success', message: 'Auditoria salva com sucesso!', auditId: res.id
             })
         })
         .catch((error) => {
@@ -80,22 +79,5 @@ module.exports = class AuditController {
                 type: 'error', message: "Erro de servidor!", errorDetails: error
             }); 
         })
-    }
-
-    mountAudits(audit) {
-        let auditToSave = [];
-        audit["enviroments_id"].forEach(enviromentId => {
-            auditToSave.push({
-                users_id: audit.users_id,
-                enviroments_id: enviromentId,
-                createDate: audit.createDate,
-                dueDate: audit.dueDate,
-                title: audit.title,
-                status: audit.status,
-                description: audit.description,
-                current_responsible: audit.users_id
-            })
-        })
-        return auditToSave;
     }
 }
