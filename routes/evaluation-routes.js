@@ -4,6 +4,10 @@ var evaluationController = require('../controllers/EvaluationController')
 
 router.post('/evaluations', function(req, res) {
     new evaluationController(req, res).save(req.body);
-})
+});
+
+router.get('/evaluations/:responsibleId', function(req, res){
+    new evaluationController(req, res).loadByAppraiserId(req.params.responsibleId)
+});
 
 module.exports = router;

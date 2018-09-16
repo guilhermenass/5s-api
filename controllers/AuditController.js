@@ -22,18 +22,6 @@ module.exports = class AuditController {
         });
     }
 
-    loadByAppraiserId(userId) {
-        this.dao.loadByAppraiserId(models.Audit, userId)
-        .then(audits => {
-            return this.res.json(audits);
-        })
-        .catch((error) => {
-            return this.res.status(400).json({
-                errorDetails: error
-            })
-        })
-    }
-
     save(audit){
         this.dao.save(models.Audit, audit)
         .then((res) => {

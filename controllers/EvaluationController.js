@@ -16,6 +16,18 @@ module.exports = class EvaluationController {
         })
     }
 
+    loadByAppraiserId(userId) {
+        this.dao.loadByAppraiserId(models.Evaluation, userId)
+        .then(evaluations => {
+            return this.res.json(evaluations);
+        })
+        .catch((error) => {
+            return this.res.status(400).json({
+                errorDetails: error
+            })
+        })
+    }
+
     createDto(obj) {
         let evaluationDto = [];
 
