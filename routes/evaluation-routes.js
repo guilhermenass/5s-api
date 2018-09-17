@@ -7,8 +7,7 @@ router.post('/evaluations', function(req, res) {
 });
 
 router.get('/evaluations', function(req, res){
-    console.log('reqqqqqqqqq', req)
-    console.log('req.paramssssss', req.params)
+    console.log('#nass', req.body)
     new evaluationController(req, res).loadByAppraiserId(req.params.responsibleId)
 });
 
