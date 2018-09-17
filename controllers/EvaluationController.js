@@ -16,8 +16,8 @@ module.exports = class EvaluationController {
         })
     }
 
-    loadByAppraiserId(userId) {
-        this.dao.loadByAppraiserId(models.Evaluation, userId)
+    loadByAppraiserId(responsibleId) {
+        this.dao.loadByAppraiserId(responsibleId)
         .then(evaluations => {
             return this.res.json(evaluations);
         })
