@@ -7,6 +7,7 @@ router.post('/evaluations', function(req, res) {
 });
 
 router.get('/evaluations/:responsibleId', function(req, res){
+    console.log('responsibleId', req.params.responsibleId)
     new evaluationController(req, res).loadByAppraiserId(req.params.responsibleId)
 });
 
