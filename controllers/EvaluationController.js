@@ -17,6 +17,7 @@ module.exports = class EvaluationController {
     }
 
     loadByAppraiserId(responsibleId) {
+        console.log('responsibleId', responsibleId)
         this.dao.loadByAppraiserId(responsibleId)
         .then(evaluations => {
             return this.res.json(evaluations);
