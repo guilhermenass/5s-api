@@ -27,7 +27,7 @@ module.exports = class AuthController {
                         profile: data.profile
                     })
                     var token = jwt.sign(user, process.env.SECRET_KEY, {
-                        expiresIn: '40d'
+                        expiresIn: '40 days'
                     });
                     
                     this._res.json({
@@ -51,7 +51,7 @@ module.exports = class AuthController {
         var password = this._req.body.password;
 
         try {
-            const data = await await this.dao.loadByEmail(models.User, email)
+            const data = await this.dao.loadByEmail(models.User, email)
              if(data){
                 var isAuthenticated =  bcrypt.compareSync(password, data.password);
                  if(isAuthenticated){
@@ -62,9 +62,9 @@ module.exports = class AuthController {
                             userName: data.userName,
                             name: data.name,
                             profile: data.profile
-                        })
+                          })
                         var token = jwt.sign(user, process.env.SECRET_KEY, {
-                            expiresIn: '12h'
+                            expiresIn: '40 days'
                         });
                         
                         this._res.json({
@@ -95,7 +95,6 @@ module.exports = class AuthController {
 
             if(data){
                var isAuthenticated =  bcrypt.compareSync('newPasswordFirstAccess', data.password);
-
                 if(isAuthenticated){
                     var user = ({
                         id: data.id,
