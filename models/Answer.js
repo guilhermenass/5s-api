@@ -6,11 +6,16 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             autoIncrement: true
         },
+
         questions_id: {
             type: DataTypes.INTEGER
         },
 
-        audits_id: {
+        evaluations_id: {
+            type: DataTypes.INTEGER
+        },
+
+        status: {
             type: DataTypes.INTEGER
         }
     },

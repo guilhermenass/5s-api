@@ -10,10 +10,6 @@ router.get('/audits', function(req, res) {
     new auditController(req, res).load();
 })
 
-router.get('/audits/:responsibleId', function(req, res){
-    new auditController(req, res).loadByAppraiserId(req.params.responsibleId)
-})
-
 router.put('/audits/:id', function(req, res){
     new auditController(req, res).update(req.body);
 })

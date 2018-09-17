@@ -1,6 +1,4 @@
 var db = require('../models/index');
-const op = db.Sequelize.Op;
-
 module.exports = class GenericDAO {
 
     constructor() {}
@@ -23,7 +21,7 @@ module.exports = class GenericDAO {
     /* método que carrega dados de acordo com o e-mail */
     loadByEmail(model, email) {
         return model.findOne({ where: { email: email }} )
-    }
+    }                                                                                                                                   
     
     /* método que carrega por um id especifico */
     loadById() {
@@ -37,16 +35,18 @@ module.exports = class GenericDAO {
         })
     }
 
-    /* retorna as pendências de acordo com o id do responsável */
-    loadByAppraiserId(model, userId) {
-        return model.findAll({
-            where: {
-                [op.or]: [ 
-                    {users_id: userId},
-                    {current_responsible: userId}
-                ]
-            }
-        })
+    /* retorna as pendências de acordo com o id do responsável */                                                                                                                                                                                                                                                           
+    loadByAppraiserId(responsibleId) {
+        return db.sequelize.query(
+            `SELECT e.id, e.date, e.status, e.date as finish_date,
+            env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id,
+            a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date
+            FROM evaluations e
+            inner join enviroments env on env.id = e.enviroments_id
+            inner join audits a on a.id = e.audits_id
+            where e.users_id = ${responsibleId};`,
+            { type: db.sequelize.QueryTypes.SELECT }
+        );
     }
         
     /* remove um determinado registro de acordo com o id */

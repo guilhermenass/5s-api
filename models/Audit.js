@@ -6,22 +6,6 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
 
-        users_id: {
-            type: DataTypes.INTEGER
-        },
-
-        enviroments_id: {
-            type: DataTypes.INTEGER
-        },
-
-        createDate: {
-            type: DataTypes.DATEONLY
-        },
-
-        dueDate: {
-            type: DataTypes.DATEONLY
-        },
-
         title: {
             type: DataTypes.STRING
         },
@@ -30,14 +14,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
 
+        initial_date: {
+            type: DataTypes.DATEONLY
+        },
+
+        due_date: {
+            type: DataTypes.DATEONLY
+        },
+
         description: {
             type: DataTypes.STRING
         },
-
-        /* se for null, é porque a auditoria já foi concluida */
-        current_responsible: {
-            type: DataTypes.INTEGER
-        }
     },  
     {
         classMethods: {
@@ -47,11 +34,6 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'audits',
         timestamps: false
     });
-
-    Audit.associate = (models) => {
-        Audit.belongsTo(models.User, { foreignKey: 'users_id'});
-        Audit.belongsTo(models.Enviroment, { foreignKey: 'enviroments_id'});
-    };
 
     return Audit;
   };

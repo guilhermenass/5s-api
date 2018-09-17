@@ -1,5 +1,6 @@
 var models = require('../models');
 var genericDAO = require('../dao/GenericDAO');
+var enviromentDAO = require('../dao/EnviromentDAO');
 
 module.exports = class EnviromentController {
     constructor(req, res){
@@ -23,7 +24,7 @@ module.exports = class EnviromentController {
     }
 
     load(){ 
-        this.dao.load(models.Enviroment, [].push(models.Unit, models.User, models.EnviromentType))
+        new enviromentDAO().load()
         .then(enviroments => {
             return this.res.json(enviroments);  
         })

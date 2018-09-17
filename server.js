@@ -16,6 +16,7 @@ const enviromentTypesRoutes = require('./routes/enviroment-types-routes')
 const enviromentsRoutes = require('./routes/enviroment-routes')
 const questionsRoutes = require('./routes/question-routes')
 const auditRoutes = require('./routes/audit-routes')
+const evaluationRoutes = require('./routes/evaluation-routes')
 
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,7 +32,7 @@ app.use('/', express.static(__dirname + '/views'));
 app.use(jwt({ secret: process.env.SECRET_KEY}).unless({path: ['/authenticate', '/authenticateApp', '/verifyEmail', '/validateFirstAccess','/firstAccess','/newPassword/:token'] }));
 
 // routes
-app.use([usersRoutes, unitsRoutes, auditRoutes, enviromentTypesRoutes, enviromentsRoutes, questionsRoutes]);
+app.use([usersRoutes, unitsRoutes, auditRoutes, enviromentTypesRoutes, enviromentsRoutes, questionsRoutes, evaluationRoutes]);
 
 app.listen(process.env.PORT || 4000, function(){
     console.log("server is up");
