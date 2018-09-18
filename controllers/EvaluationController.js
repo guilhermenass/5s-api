@@ -44,8 +44,8 @@ module.exports = class EvaluationController {
         return evaluationDto;
     }
 
-    finishEvaluation(evaluation) {
-        this.dao.save(models.Evaluation, evaluation)
+    finishEvaluation(obj) {
+        this.dao.bulkCreate(models.Answer, obj)
         .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Avaliação finalizada com sucesso!'
