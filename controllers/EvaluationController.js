@@ -1,6 +1,5 @@
 var genericDAO = require('../dao/GenericDAO');
 var models = require('../models');
-var evaluationDAO = require('../dao/EvaluationDAO');
 
 module.exports = class EvaluationController {
     constructor(req, res) {
