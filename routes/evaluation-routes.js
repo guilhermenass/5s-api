@@ -10,4 +10,8 @@ router.get('/evaluations', function(req, res){
     new evaluationController(req, res).loadByAppraiserId(req.user.id);
 });
 
+router.post('/evaluations/finish', function(req, res){
+    new evaluationController(req, res).finishEvaluation(req.body);
+})
+
 module.exports = router;

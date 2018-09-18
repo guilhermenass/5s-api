@@ -1,5 +1,6 @@
 var genericDAO = require('../dao/GenericDAO');
 var models = require('../models');
+var evaluationDAO = require('../dao/EvaluationDAO');
 
 module.exports = class EvaluationController {
     constructor(req, res) {
@@ -42,6 +43,22 @@ module.exports = class EvaluationController {
         });
 
         return evaluationDto;
+    }
+
+    finishEvaluation(evaluation) {
+        this.dao.save(models.Evaluation, evaluation)
+        .then(() => {
+            return this.res.status(201).json({
+                type: 'success', message: 'Avaliação finalizada com sucesso!'
+            })
+        })
+        .catch(error => {
+            return this.res.status(400).json({
+                type: 'error',
+                message: 'Ocorreu um erro ao tentar finalizar a avaliação',
+                errorDetails: error
+            })
+        })
     }
 }
 
