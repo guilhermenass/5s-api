@@ -51,13 +51,11 @@ module.exports = class EvaluationController {
                 type: 'success', message: 'Avaliação finalizada com sucesso!'
             })
         })
-        .catch(error => {
-            return this.res.status(400).json({
-                type: 'error',
-                message: 'Ocorreu um erro ao tentar finalizar a avaliação',
-                errorDetails: error
-            })
-        })
+        .catch((error) => {   
+            return this.res.status(500).json({
+                type: 'error', message: 'Ocorreu um erro ao salvar!', errorDetails: error
+            });
+        });
     }
 }
 
