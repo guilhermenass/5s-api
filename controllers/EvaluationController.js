@@ -44,8 +44,16 @@ module.exports = class EvaluationController {
         return evaluationDto;
     }
 
-    finishEvaluation(obj) {
-        this.dao.bulkCreate(models.Answer, obj)
+    finishEvaluation(answer) {
+        var dto = [];
+        answer.forEach(element => {
+            dto.push({
+                status: element.status ? 1 : 0, // 0 = negativo, 1 = positivo
+                questions_id: element.questionId,
+                evaluations_id: element.evaluateId
+            })
+        })
+        this.dao.bulkCreate(models.Answer, dto)
         .then(() => {
             return this.res.status(201).json({
                 type: 'success', message: 'Avaliação finalizada com sucesso!'
