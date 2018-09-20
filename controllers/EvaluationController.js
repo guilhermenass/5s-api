@@ -11,6 +11,9 @@ module.exports = class EvaluationController {
     save(obj) {
         var evaluationDto = this.createDto(obj);
         this.dao.bulkCreate(models.Evaluation, evaluationDto)
+        .then((res) => {
+            return this.res.json(res)
+        })
         .catch((error) => {
             console.log(error);
         })
