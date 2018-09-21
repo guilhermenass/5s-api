@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
 
         status: {
             type: DataTypes.INTEGER
+        },
+        
+        comments: {
+            type: DataTypes.STRING
         }
     },
     {
@@ -30,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Answer.associate = (models) => {
-        Answer.belongsTo(models.Audit, { foreignKey: 'audits_id'});
+        Answer.belongsTo(models.Evaluation, { foreignKey: 'evaluations_id'});
         Answer.belongsTo(models.Question, { foreignKey: 'questions_id'});
     };
     
