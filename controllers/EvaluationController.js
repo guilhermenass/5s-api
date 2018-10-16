@@ -1,5 +1,7 @@
 var genericDAO = require('../dao/GenericDAO');
 var models = require('../models');
+var emailController = require('./EmailController');
+
 
 module.exports = class EvaluationController {
     constructor(req, res) {
@@ -40,6 +42,7 @@ module.exports = class EvaluationController {
                units_id: obj.evaluations.units_id,
                users_id: obj.evaluations.users_id,
                audits_id: obj.id,
+               current_responsible: obj.evaluations.users_id,
                status: 0
             })
         });
@@ -67,6 +70,69 @@ module.exports = class EvaluationController {
                 type: 'error', message: 'Ocorreu um erro ao salvar!', errorDetails: error
             });
         });
+    }
+
+    async sendEmailSuccessful() {
+        let isSent = false;
+        try {
+            isSent = await new emailController().sendEmailSuccessfulEvaluation();
+            if(isSent) {
+                return this.res.status(200).json({
+                    type: 'success', message: 'E-mail enviado para o avaliador'
+                })
+            }
+        } catch (error) {
+            return this.res.status(500).json({
+                type: 'error', message: 'Ocorreu um erro no envio do e-mail', errorDetails: error
+            })
+        }
+    }
+
+    async sendEmailWithNonCompliances(nonCompliances) {
+        let isSent = false;
+        try {
+            isSent = await new emailController().sendEmailWithNonCompliances(nonCompliances);
+            if(isSent) {
+                return this.res.status(200).json({
+                    type: 'success', message: 'E-mail enviado para o avaliador'
+                })
+            }
+        } catch (error) {
+            return this.res.status(500).json({
+                type: 'error', message: 'Ocorreu um erro no envio do e-mail', errorDetails: error
+            })
+        }
+    }
+
+    async sendEmailSchedulingEvaluation() {
+        let isSent = false;
+        try {
+            isSent = await new emailController().sendEmailSchedulingEvaluation(nonCompliances);
+            if(isSent) {
+                return this.res.status(200).json({
+                    type: 'success', message: 'E-mail enviado para o avaliador'
+                })
+            }
+        } catch (error) {
+            return this.res.status(500).json({
+                type: 'error', message: 'Ocorreu um erro no envio do e-mail', errorDetails: error
+            })
+        }        
+    }
+
+    updateStatus(status) {
+        return this.dao.updateStatus(models.Evaluation, this.req.id, status)
+        .then(res => {
+            return this.res.status(200).json({})
+        })
+        .catch((error) => {
+            console.log(error);
+            return this.req.status(500).json({
+                type: 'error',
+                message: 'Ocorreu um erro ao atualizar o status',
+                errorDetails: error
+            })
+        })
     }
 }
 

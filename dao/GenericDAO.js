@@ -44,7 +44,7 @@ module.exports = class GenericDAO {
             FROM evaluations e
             inner join enviroments env on env.id = e.enviroments_id
             inner join audits a on a.id = e.audits_id
-            where e.users_id = ${responsibleId};`,
+            where e.users_id = ${responsibleId} and e.current_responsible = ${responsibleId}`,
             { type: db.sequelize.QueryTypes.SELECT }
         );
     }
@@ -59,11 +59,16 @@ module.exports = class GenericDAO {
         return model.update(entity, { where: { id: entity.id } })
     }
 
+    /* atualiza o status da avaliação */
+    updateStatus(model, evaluationId, status) {
+        return model.update({status: status}, {where: { id: evaluationId} })
+    }
+
     /* método responsável por atualizar a senha do usuário com criptografia */
     updatePassword(model, userId, password) {
         return model.update({ password: password },
-            { 
-                where: { id: userId }
-            })
+        { 
+            where: { id: userId }
+        })
     }
 }

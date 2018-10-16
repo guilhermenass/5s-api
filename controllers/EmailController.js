@@ -1,5 +1,4 @@
 var nodemailer = require('nodemailer');
-console.log("#1");
 module.exports = class EmailController {
     constructor(req, res){
         this.req = req;
@@ -7,16 +6,9 @@ module.exports = class EmailController {
     }
 
     async sendEmail(token, user) {
-        console.log("#2", user, " " + token);
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'suportesenai5s@gmail.com',
-                pass: process.env.PASSWORD
-            }
-        })
-        console.log("#3");
-        var url = `https://login-senai5s.herokuapp.com/new-password.html?token=${token}&id=${user.id}`;
+        const transporter = this.createTransport();
+
+        var url = `http://localhost:4000/new-password.html?token=${token}&id=${user.id}`;
         const mailOptions = {
             from: 'SENAI 5S <suportesenai5s@gmail.com>',
             to: user.email, 
@@ -35,4 +27,87 @@ module.exports = class EmailController {
         })
         return response;
     };
+
+    async sendEmailSuccessfulEvaluation() {
+        const transporter = this.createTransport();
+        const mailOptions = {
+            from: 'SENAI 5S <suportesenai5s@gmail.com>',
+            to: 'nassguilherme@gmail.com',  //TODO: Colocar o email do responsável
+            subject: 'Avaliação finalizada com sucesso', 
+            html: `<p>Olá,</p>
+                  </br>
+                  <p>Parabéns! O ambiente no qual você é responsável foi avaliado na auditoria 5S e não foram encontradas inconformidades!</p>
+                  </br>`
+        };
+
+        var response = true;
+        await transporter.sendMail(mailOptions).then((data, err) => {
+            if(err)
+                response = false;
+        })
+        return response;
+    }
+
+    async sendEmailWithNonCompliances(nonCompliances) {
+
+        var nonComplianceItems = "<ul>";
+        nonCompliances.forEach(nonCompliance => {
+            nonComplianceItems += `<li> Nome da não conformidade: ${nonCompliance.name} </li></br>`
+            nonComplianceItems += `<li> Descrição: ${nonCompliance.description} </li></br></br>`;
+        });
+        nonComplianceItems += "</ul>";
+        const transporter = this.createTransport();
+
+        const mailOptions = {
+            from: 'SENAI 5S <suportesenai5s@gmail.com>',
+            to: 'nassguilherme@gmail.com',  //TODO: Colocar o email do responsável
+            subject: 'Avaliação finalizada com não conformidades encontradas', 
+            html: `<p>Olá,</p>
+                  </br>
+                  <p>O ambiente no qual você é responsável foi avaliado na auditoria 5S foram encontradas algumas não conformidades:</p>
+                  </br>
+                  ${nonComplianceItems}
+                  </br>` 
+
+        };
+
+        var response = true;
+        await transporter.sendMail(mailOptions).then((data, err) => {
+            if(err)
+                response = false;
+        })
+        return response;
+    }
+
+    async sendEmailSchedulingEvaluation() {
+        const transporter = this.createTransport();
+        const mailOptions = {
+            from: 'SENAI 5S <suportesenai5s@gmail.com>',
+            to: 'nassguilherme@gmail.com',
+            subject: 'Avaliação agendada com sucesso', 
+            html: `<p>Olá,</p>
+                  </br>
+                  <p>Você foi selecionado para avaliar o ambiente ${ambiente} com o prazo de término até ${dueDate} </p></br>
+                  <p>Acesse seu aplicativo e avalie o ambiente pendente até o prazo determinado.
+                  </br>`
+        };
+
+        var response = true;
+        await transporter.sendMail(mailOptions).then((data, err) => {
+            if(err)
+                response = false;
+        })
+        return response;
+        
+    }
+
+    createTransport() {
+        return nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'suportesenai5s@gmail.com',
+                pass: 'senai5s2018'
+            }
+        })
+    }
 }

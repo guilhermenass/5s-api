@@ -1,5 +1,8 @@
 module.exports = (sequelize, DataTypes) => {  
     const Evaluation = sequelize.define('Evaluation', {
+        /**
+         * Chave primária da avaliação
+         */
 		id: {
 			primaryKey: true,
             type: DataTypes.INTEGER,
@@ -42,13 +45,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER
         },
 
-
+        /**
+         * Id do responsável atual pela avaliação (avaliador ou responsável)
+         */
+        current_responsible: {
+            type: DataTypes.INTEGER
+        }
     },  
     {
-        classMethods: {
-            associate : function(models) {
-            },
-        },
         tableName: 'evaluations',
         timestamps: false
     });

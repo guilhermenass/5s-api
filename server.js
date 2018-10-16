@@ -2,13 +2,8 @@ require('dotenv').config();
 var express = require('express')
 var bodyParser = require('body-parser')
 var jwt = require('jsonwebtoken')
-var path = require('path')
-var app = express()
-const mysql = require('mysql')
-const main = require('./routes/main')
+var app = express();
 var jwt = require('express-jwt')
-
-console.log("testeeeeeeeeeeeeeeeeee", process.env.PASSWORD);
 
 const usersRoutes = require('./routes/user-routes')
 const unitsRoutes = require('./routes/unit-routes')

@@ -115,11 +115,9 @@ module.exports = class UserController {
 
             var token = jwt.sign(user, process.env.SECRET_KEY, {
                  expiresIn: '6h'
-            });           
+            });        
 
             const emailWasSent = await new emailController().sendEmail(token, user);
-	    console.log("emaiaaaaaaaaaaaaaaaal", emailWasSent);
-		
             if(emailWasSent)
                 return this.res.status(201).json({msg: 'E-mail enviado com sucesso para ' + email})
         } else {
