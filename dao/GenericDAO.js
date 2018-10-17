@@ -39,7 +39,7 @@ module.exports = class GenericDAO {
     loadByAppraiserId(responsibleId) {
         return db.sequelize.query(
             `SELECT e.id, e.date, e.status, e.date as finish_date,
-            env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id
+            env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
             a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date
             FROM evaluations e
             inner join enviroments env on env.id = e.enviroments_id
