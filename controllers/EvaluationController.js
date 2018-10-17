@@ -2,7 +2,6 @@ var genericDAO = require('../dao/GenericDAO');
 var models = require('../models');
 var emailController = require('./EmailController');
 
-
 module.exports = class EvaluationController {
     constructor(req, res) {
         this.req = req;
@@ -33,21 +32,21 @@ module.exports = class EvaluationController {
         })
     }
 
-    createDto(obj) {
-        let evaluationDto = [];
+    createDto(audit) {
+        let auditDto = [];
 
-        obj.evaluations.enviroments_id.forEach(enviromentId => {
-           evaluationDto.push({
+        audit.evaluations.enviroments_id.forEach(enviromentId => {
+           auditDto.push({
                enviroments_id: enviromentId,
-               units_id: obj.evaluations.units_id,
-               users_id: obj.evaluations.users_id,
-               audits_id: obj.id,
-               current_responsible: obj.evaluations.users_id,
+               units_id: audit.evaluations.units_id,
+               users_id: audit.evaluations.users_id,
+               audits_id: audit.id,
+               current_responsible: audit.evaluations.users_id,
                status: 0
             })
         });
 
-        return evaluationDto;
+        return auditDto;
     }
 
     finishEvaluation(answer) {
@@ -121,12 +120,14 @@ module.exports = class EvaluationController {
     }
 
     updateStatus(status) {
-        return this.dao.updateStatus(models.Evaluation, this.req.id, status)
+        return this.dao.updateStatus(models.Evaluation, this.req.params.id, status)
         .then(res => {
-            return this.res.status(200).json({})
+            return this.res.status(200).json({
+                type: 'success',
+                message: 'A avaliação foi concluída com sucesso!'
+            })
         })
         .catch((error) => {
-            console.log(error);
             return this.req.status(500).json({
                 type: 'error',
                 message: 'Ocorreu um erro ao atualizar o status',

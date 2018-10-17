@@ -28,11 +28,11 @@ module.exports = class EmailController {
         return response;
     };
 
-    async sendEmailSuccessfulEvaluation() {
+    async sendEmailSuccessfulEvaluation(email) {
         const transporter = this.createTransport();
         const mailOptions = {
             from: 'SENAI 5S <suportesenai5s@gmail.com>',
-            to: 'nassguilherme@gmail.com',  //TODO: Colocar o email do responsável
+            to: email,
             subject: 'Avaliação finalizada com sucesso', 
             html: `<p>Olá,</p>
                   </br>
