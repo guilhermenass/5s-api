@@ -1,39 +1,35 @@
 module.exports = (sequelize, DataTypes) => {  
-    const Audit = sequelize.define('Audit', {
+	const Audit = sequelize.define('Audit', {
 		id: {
 			primaryKey: true,
-            type: DataTypes.INTEGER,
-            autoIncrement: true
-        },
+			type: DataTypes.INTEGER,
+			autoIncrement: true
+		},
 
-        title: {
-            type: DataTypes.STRING
-        },
+		title: {
+			type: DataTypes.STRING
+		},
 
-        status: {
-            type: DataTypes.STRING
-        },
+		status: {
+			type: DataTypes.STRING
+		},
 
-        initial_date: {
-            type: DataTypes.DATEONLY
-        },
+		initial_date: {
+			type: DataTypes.DATEONLY
+		},
 
-        due_date: {
-            type: DataTypes.DATEONLY
-        },
+		due_date: {
+			type: DataTypes.DATEONLY
+		},
 
-        description: {
-            type: DataTypes.STRING
-        },
-    },  
-    {
-        classMethods: {
-            associate : function(models) {
-            },
-        },
-        tableName: 'audits',
-        timestamps: false
-    });
+		description: {
+			type: DataTypes.STRING
+		},
+	},  
+	{
+		tableName: 'audits',
+		timestamps: false
+	})
 
-    return Audit;
-  };
+	return Audit
+}

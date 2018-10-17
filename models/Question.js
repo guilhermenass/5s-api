@@ -1,31 +1,27 @@
 module.exports = (sequelize, DataTypes) => {  
     
-    var Question = sequelize.define('Question', {
-        id: {
+	var Question = sequelize.define('Question', {
+		id: {
 			primaryKey: true,
-            type: DataTypes.INTEGER,
-            autoIncrement: true
-        },
-        title: {
-            type: DataTypes.STRING
-        },
-        sense: {
-            type: DataTypes.INTEGER
-        },
-        description: {
-            type: DataTypes.STRING
-        }
-    },
-    {
-        classMethods: {
-            associate : function(models) { },
-        },
-
-        tableName: 'questions',
-        timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
-    });
+			type: DataTypes.INTEGER,
+			autoIncrement: true
+		},
+		title: {
+			type: DataTypes.STRING
+		},
+		sense: {
+			type: DataTypes.INTEGER
+		},
+		description: {
+			type: DataTypes.STRING
+		}
+	},
+	{
+		tableName: 'questions',
+		timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
+	})
     
 
 
-    return Question;
-};
+	return Question
+}

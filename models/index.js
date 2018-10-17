@@ -1,36 +1,36 @@
-const Sequelize = require('sequelize');
-const settings = require('config');
+const Sequelize = require('sequelize')
+const settings = require('config')
 
-var fs = require("fs");
-var path = require("path");
+var fs = require('fs')
+var path = require('path')
 
 const sequelize = new Sequelize(settings.database.name, settings.database.user, settings.database.password, {
-  host: settings.database.host,
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: true
-  },
-  logging: true
-});
+	host: settings.database.host,
+	dialect: 'postgres',
+	dialectOptions: {
+		ssl: false
+	},
+	logging: true
+})
 
-var db = {};
+var db = {}
 
 fs.readdirSync(__dirname).filter(function(file) {
-  return (file.indexOf(".") !== 0) && (file !== "index.js");
+	return (file.indexOf('.') !== 0) && (file !== 'index.js')
 })
-.forEach(function(file) {
-  var model = sequelize.import(path.join(__dirname, file));
-  db[model.name] = model;
-});
+	.forEach(function(file) {
+		var model = sequelize.import(path.join(__dirname, file))
+		db[model.name] = model
+	})
 
 Object.keys(db).forEach(function(modelName) {
-  if ("associate" in db[modelName]) {
-    db[modelName].associate(db);
-  }
-});
+	if ('associate' in db[modelName]) {
+		db[modelName].associate(db)
+	}
+})
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-db.sequelize.sync();
+db.sequelize = sequelize
+db.Sequelize = Sequelize
+db.sequelize.sync()
 
-module.exports = db;
+module.exports = db
