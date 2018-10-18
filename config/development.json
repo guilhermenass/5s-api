@@ -1,0 +1,8 @@
+{
+    "database": {
+        "user": "postgres",
+        "password": "",
+        "name": "senai_5s",
+        "host": "localhost"
+    }
+}
