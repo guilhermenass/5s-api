@@ -15,7 +15,7 @@
   },
   "production": {
     "username": "lkixlvvedungwj",
-    "password": "972b51a8e4eea3ce72642ff0e095d2b6ef6b03765858690be9578086c673fd7c",
+    "password": "1734489648f617dcb0c558e5a41c1e6a54a21197729a8328eb19fb7e26bf232a",
     "name": "df5v07if1maeke",
     "host": "ec2-54-243-137-182.compute-1.amazonaws.com",
     "dialect": "postgres"
