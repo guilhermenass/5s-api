@@ -8,14 +8,14 @@ const evaluationRoutes = require('./evaluation-routes')
 const emailRoutes = require('./email-routes')
 
 let routes = {
-  usersRoutes: usersRoutes,
-  unitsRoutes: unitsRoutes,
-  enviromentTypesRoutes: enviromentTypesRoutes,
-  enviromentsRoutes: enviromentsRoutes,
-  questionsRoutes: questionsRoutes,
-  auditRoutes: auditRoutes,
-  evaluationRoutes: evaluationRoutes,
-  emailRoutes: emailRoutes
+	usersRoutes: usersRoutes,
+	unitsRoutes: unitsRoutes,
+	enviromentTypesRoutes: enviromentTypesRoutes,
+	enviromentsRoutes: enviromentsRoutes,
+	questionsRoutes: questionsRoutes,
+	auditRoutes: auditRoutes,
+	evaluationRoutes: evaluationRoutes,
+	emailRoutes: emailRoutes
 }
 
 module.exports = routes
