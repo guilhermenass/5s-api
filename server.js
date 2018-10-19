@@ -4,14 +4,7 @@ var bodyParser = require('body-parser')
 var app = express()
 var jwt = require('express-jwt')
 
-const usersRoutes = require('./routes/user-routes')
-const unitsRoutes = require('./routes/unit-routes')
-const enviromentTypesRoutes = require('./routes/enviroment-types-routes')
-const enviromentsRoutes = require('./routes/enviroment-routes')
-const questionsRoutes = require('./routes/question-routes')
-const auditRoutes = require('./routes/audit-routes')
-const evaluationRoutes = require('./routes/evaluation-routes')
-const emailRoutes = require('./routes/email-routes')
+const routes = require('./src/routes/routes');
 
 app.use(function(req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*')
@@ -28,14 +21,14 @@ app.use(jwt({ secret: process.env.SECRET_KEY}).unless({path: ['/users', '/authen
 
 // routes
 app.use([
-	usersRoutes,
-	unitsRoutes,
-	auditRoutes,
-	enviromentTypesRoutes,
-	enviromentsRoutes,
-	questionsRoutes,
-	evaluationRoutes,
-	emailRoutes
+	routes.usersRoutes,
+	routes.unitsRoutes,
+	routes.auditRoutes,
+	routes.enviromentTypesRoutes,
+	routes.enviromentsRoutes,
+	routes.questionsRoutes,
+	routes.evaluationRoutes,
+	routes.emailRoutes
 ])
 
 app.listen(process.env.PORT || 4000, function(){
