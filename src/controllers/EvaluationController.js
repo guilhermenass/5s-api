@@ -34,14 +34,12 @@ module.exports = class EvaluationController {
 
 	createDto(audit) {
 		let auditDto = []
-
-		audit.evaluations.enviroments_id.forEach(enviromentId => {
+		audit.evaluations.forEach(evaluation => {
 			auditDto.push({
-				enviroments_id: enviromentId,
-				units_id: audit.evaluations.units_id,
-				users_id: audit.evaluations.users_id,
+				enviroments_id: evaluation.environments_id,
+				users_id: evaluation.users_id,
 				audits_id: audit.id,
-				current_responsible: audit.evaluations.users_id,
+				current_responsible: evaluation.users_id,
 				status: 0
 			})
 		})
