@@ -12,7 +12,7 @@ module.exports = class AuditDAO {
                 e.id as evaluation_id, e.enviroments_id, e.users_id, e.date, e.status,
                 env.name as enviroment_name,
                 us.name as user_name,
-                u.id as units_id
+                u.id as units_id, u.name as unit_name
                 from audits a
                 inner join evaluations e on a.id = e.audits_id
                 inner join enviroments env on env.id = e.enviroments_id

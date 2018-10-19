@@ -4,7 +4,7 @@ var bodyParser = require('body-parser')
 var app = express()
 var jwt = require('express-jwt')
 
-const routes = require('./src/routes/routes')
+const routes = require('./src/routes/routes');
 
 app.use(function(req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*')
