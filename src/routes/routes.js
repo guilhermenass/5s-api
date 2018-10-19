@@ -15,6 +15,7 @@ let routes = {
   questionsRoutes: questionsRoutes,
   auditRoutes: auditRoutes,
   evaluationRoutes: evaluationRoutes,
+  emailRoutes: emailRoutes
 }
 
-module.exports = routes;
+module.exports = routes
