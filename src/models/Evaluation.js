@@ -57,8 +57,8 @@ module.exports = (sequelize, DataTypes) => {
 		timestamps: false
 	})
 
-	Evaluation.associate = (models) => {
-		Evaluation.belongsTo(models.Audit, { foreignKey: 'audits_id'})
+	Evaluation.associate = function (models) {
+		Evaluation.belongsTo(models.Audit, {foreignKey: 'audits_id'})
 		Evaluation.belongsTo(models.Enviroment, { foreignKey: 'enviroments_id'})
 		Evaluation.belongsTo(models.User, { foreignKey: 'users_id'})
 	}

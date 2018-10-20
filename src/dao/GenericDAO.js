@@ -1,4 +1,5 @@
 var db = require('../models/index')
+
 module.exports = class GenericDAO {
 
 	constructor() {}
