@@ -11,7 +11,7 @@ router.get('/evaluations/appraiser', function(req, res){
 })
 
 router.get('/evaluations/responsible', function(req, res){
-	new evaluationController(req, res).loadByAppraiserId(req.user.id)
+	new evaluationController(req, res).loadByResponsibleId(req.user.id)
 })
 
 router.post('/evaluations/finish', function(req, res){

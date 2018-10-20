@@ -45,7 +45,7 @@ module.exports = class GenericDAO {
             FROM evaluations e
             inner join enviroments env on env.id = e.enviroments_id
             inner join audits a on a.id = e.audits_id
-		where e.users_id = ${appraiserId} and e.current_responsible != 1`,
+		where e.users_id = ${appraiserId} and e.status != 1 and e.current_responsible = ${appraiserId}`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
@@ -59,7 +59,7 @@ module.exports = class GenericDAO {
 			FROM evaluations e
 			inner join enviroments env on env.id = e.enviroments_id
 			inner join audits a on a.id = e.audits_id
-			where env.users_id = ${responsibleId} and e.current_responsible = 1`,
+			where env.users_id = ${responsibleId} and e.status = 1 and e.current_responsible = ${responsibleId}`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
