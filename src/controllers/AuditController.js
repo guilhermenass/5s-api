@@ -10,12 +10,12 @@ module.exports = class AuditController {
 	}
 
 	load() {
-		new auditDAO().load()
+		new auditDAO().load(models.Audit)
 			.then(audits => {
-            
 				return this.res.json(audits)
 			})
 			.catch((error) => {
+				console.log('xxxxx',error)
 				return this.res.status(500).json({
 					errorDetails: error
 				})

@@ -1,4 +1,5 @@
-module.exports = (sequelize, DataTypes) => {  
+module.exports = (sequelize, DataTypes) => {
+
 	const Audit = sequelize.define('Audit', {
 		id: {
 			primaryKey: true,
@@ -25,11 +26,15 @@ module.exports = (sequelize, DataTypes) => {
 		description: {
 			type: DataTypes.STRING
 		},
-	},  
+	},
 	{
 		tableName: 'audits',
 		timestamps: false
 	})
+
+	Audit.associate = function (models) {
+		Audit.hasMany(models.Evaluation, {foreignKey: 'audits_id'})
+	}
 
 	return Audit
 }
