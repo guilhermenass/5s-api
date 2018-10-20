@@ -52,8 +52,8 @@ module.exports = class EmailController {
 
 		var nonComplianceItems = '<ul>'
 		obj.evaluationDto.nonCompliances.forEach(nonCompliance => {
-			nonComplianceItems += `<li> Nome da não conformidade: ${nonCompliance.questionTitle} &zwnj;</li>`
-			nonComplianceItems += `<li> Comentário: ${nonCompliance.comments} &zwnj;</li>`
+			nonComplianceItems += `<li> Nome da não conformidade: ${nonCompliance.questionTitle} </li>`
+			nonComplianceItems += `<li> Comentário: ${nonCompliance.comments}</li>&zwnj;`
 		})
 		nonComplianceItems += '</ul>'
 		const transporter = this.createTransport()

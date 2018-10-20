@@ -38,9 +38,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 
 		/** Status da avaliação
-         * 0 = pendente
-         * 1 = concluida
-         */
+        * 0 Pendente com Avaliador
+		* 1 Pendente com Responsavel do ambiente
+		* 2 Concluida
+        */
 		status: {
 			type: DataTypes.INTEGER
 		},
