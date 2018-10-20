@@ -36,22 +36,33 @@ module.exports = class GenericDAO {
 		})
 	}
 
-	/* retorna as pendências de acordo com o id do responsável */                                                                                                                                                                                                                                                           
-	loadByAppraiserId(responsibleId) {
+	/* retorna as pendências de acordo com o id do avaliador */                                                                                                                                                                                                                                                           
+	loadByAppraiserId(appraiserId) {
 		return db.sequelize.query(
 			`SELECT e.id, e.date, e.status, e.date as finish_date,
             env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
-			a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date,
-			u.email
+            a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date
             FROM evaluations e
             inner join enviroments env on env.id = e.enviroments_id
-			inner join audits a on a.id = e.audits_id
-			inner join users u on e.users_id = u.id
-            where e.users_id = ${responsibleId} and e.current_responsible = ${responsibleId}`,
+            inner join audits a on a.id = e.audits_id
+		where e.users_id = ${appraiserId} and e.current_responsible != 1`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
-        
+	 
+	/* retorna as pendências de acordo com o id do responsável */                                                                                                                                                                                                                                                           
+	loadByResponsibleId(responsibleId) {
+		return db.sequelize.query(
+			`SELECT e.id, e.date, e.status, e.date as finish_date,
+			env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
+			a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date
+			FROM evaluations e
+			inner join enviroments env on env.id = e.enviroments_id
+			inner join audits a on a.id = e.audits_id
+			where env.users_id = ${responsibleId} and e.current_responsible = 1`,
+			{ type: db.sequelize.QueryTypes.SELECT }
+		)
+	}
 	/* remove um determinado registro de acordo com o id */
 	remove(model, id) {
 		return model.destroy({ where: { id: id} })
