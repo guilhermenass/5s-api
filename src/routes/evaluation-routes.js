@@ -6,7 +6,11 @@ router.post('/evaluations', function(req, res) {
 	new evaluationController(req, res).save(req.body)
 })
 
-router.get('/evaluations', function(req, res){
+router.get('/evaluations/appraiser', function(req, res){
+	new evaluationController(req, res).loadByAppraiserId(req.user.id)
+})
+
+router.get('/evaluations/responsible', function(req, res){
 	new evaluationController(req, res).loadByAppraiserId(req.user.id)
 })
 
