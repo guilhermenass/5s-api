@@ -41,10 +41,12 @@ module.exports = class GenericDAO {
 		return db.sequelize.query(
 			`SELECT e.id, e.date, e.status, e.date as finish_date,
             env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
-            a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date
+			a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date,
+			u.email
             FROM evaluations e
             inner join enviroments env on env.id = e.enviroments_id
-            inner join audits a on a.id = e.audits_id
+			inner join audits a on a.id = e.audits_id
+			inner join users u on e.users_id = u.id
             where e.users_id = ${responsibleId} and e.current_responsible = ${responsibleId}`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)

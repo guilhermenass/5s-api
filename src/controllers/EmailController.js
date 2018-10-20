@@ -48,19 +48,19 @@ module.exports = class EmailController {
 		return response
 	}
 
-	async sendEmailWithNonCompliances(nonCompliances) {
+	async sendEmailWithNonCompliances(obj) {
 
 		var nonComplianceItems = '<ul>'
-		nonCompliances.forEach(nonCompliance => {
-			nonComplianceItems += `<li> Nome da não conformidade: ${nonCompliance.name} </li></br>`
-			nonComplianceItems += `<li> Descrição: ${nonCompliance.description} </li></br></br>`
+		obj.evaluationDto.nonCompliances.forEach(nonCompliance => {
+			nonComplianceItems += `<li> Nome da não conformidade: ${nonCompliance.questionTitle} &zwnj;</li>`
+			nonComplianceItems += `<li> Comentário: ${nonCompliance.comments} &zwnj;</li>`
 		})
 		nonComplianceItems += '</ul>'
 		const transporter = this.createTransport()
 
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
-			to: 'nassguilherme@gmail.com',  //TODO: Colocar o email do responsável
+			to: obj.evaluationDto.email,
 			subject: 'Avaliação finalizada com não conformidades encontradas', 
 			html: `<p>Olá,</p>
                   </br>
