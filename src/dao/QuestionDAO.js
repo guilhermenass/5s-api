@@ -15,7 +15,7 @@ module.exports = class QuestionDAO {
 
 	getNonCompliancesByEvaluationId(evaluationId) {
 		return db.sequelize.query(
-			`select distinct on (q.id) * from evaluations e
+			`select distinct on (q.id) q.id, q.title, a.comments from evaluations e
 			inner join answers a on a.evaluations_id = e.id
 			inner join questions q on q.id = a.questions_id
 			where a.status = 0 and e.id = ${evaluationId};`,
