@@ -20,8 +20,20 @@ module.exports = class EvaluationController {
 			})
 	}
 
-	loadByAppraiserId(responsibleId) {
-		this.dao.loadByAppraiserId(responsibleId)
+	loadByAppraiserId(appraiserId) {
+		this.dao.loadByAppraiserId(appraiserId)
+			.then(evaluations => {
+				return this.res.json(evaluations)
+			})
+			.catch((error) => {
+				return this.res.status(400).json({
+					errorDetails: error
+				})
+			})
+	}
+
+	loadByResponsibleId(responsibleId) {
+		this.dao.loadByResponsibleId(responsibleId)
 			.then(evaluations => {
 				return this.res.json(evaluations)
 			})
