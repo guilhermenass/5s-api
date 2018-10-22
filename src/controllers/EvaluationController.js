@@ -61,11 +61,13 @@ module.exports = class EvaluationController {
 
 	finishEvaluation(answer) {
 		var dto = []
+		console.log('comentsssss',answer);
 		answer.forEach(element => {
 			dto.push({
 				status: element.status ? 1 : 0, // 0 = negativo, 1 = positivo
 				questions_id: element.questionId,
-				evaluations_id: element.evaluateId
+				evaluations_id: element.evaluateId,
+				comments: element.comments
 			})
 		})
 		this.dao.bulkCreate(models.Answer, dto)

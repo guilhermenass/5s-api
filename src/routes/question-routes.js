@@ -22,6 +22,10 @@ router.get('/questions/enviromentType/:enviromentTypeId', function(req, res){
 	new questionController(req, res).getQuestionsByEnviromentTypeId(req.params.enviromentTypeId)
 })
 
+router.get('/questions/nonCompliances/:evaluationId', function(req, res){
+	new questionController(req, res).getNonCompliancesByEvaluationId(req.params.evaluationId)
+})
+
 router.put('/questions/:id', function(req, res){
 	new questionController(req, res).update(req.body)
 })
