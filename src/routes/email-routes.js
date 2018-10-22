@@ -7,8 +7,11 @@ router.post('/email/success', function(req, res){
 })
 
 router.post('/email/nonCompliances', function(req, res){
-	console.log('reqqqq', req.body)
 	new emailController(req, res).sendEmailWithNonCompliances(req.body)
+})
+
+router.post('/email/schedule', function(req, res){
+	new emailController(req, res).sendEmailSchedulingEvaluation(req.body)
 })
 
 module.exports = router

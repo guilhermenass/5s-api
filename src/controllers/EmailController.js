@@ -80,11 +80,11 @@ module.exports = class EmailController {
 	}
 
 	//TODO: mudar aqui vem o ambiente e aqui vem a duedate por variaveis reais
-	async sendEmailSchedulingEvaluation() {
+	async sendEmailSchedulingEvaluation(emails) {
 		const transporter = this.createTransport()
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
-			to: 'nassguilherme@gmail.com',
+			to: emails,
 			subject: 'Avaliação agendada com sucesso', 
 			html: `<p>Olá,</p>
                   </br>
