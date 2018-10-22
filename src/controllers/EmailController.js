@@ -79,17 +79,16 @@ module.exports = class EmailController {
 		return response
 	}
 
-	//TODO: mudar aqui vem o ambiente e aqui vem a duedate por variaveis reais
 	async sendEmailSchedulingEvaluation(emails) {
 		const transporter = this.createTransport()
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
-			to: emails,
+			bcc: emails,
 			subject: 'Avaliação agendada com sucesso', 
 			html: `<p>Olá,</p>
                   </br>
-                  <p>Você foi selecionado para avaliar o ambiente AQUI VEM O AMBIENTE com o prazo de término até AQUI VEM A DUEDATA </p></br>
-                  <p>Acesse seu aplicativo e avalie o ambiente pendente até o prazo determinado.
+                  <p>Você foi selecionado para participar de uma auditoria 5S. </p></br>
+                  <p>Acesse o aplicativo 5S e avalie o ambiente pendente até o prazo determinado.
                   </br>`
 		}
 
