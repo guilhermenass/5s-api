@@ -41,12 +41,25 @@ module.exports = class GenericDAO {
 		return db.sequelize.query(
 			`SELECT e.id, e.date, e.status, e.date as finish_date,
             env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
-            a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date
+            a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date,
+			u.email
             FROM evaluations e
             inner join enviroments env on env.id = e.enviroments_id
             inner join audits a on a.id = e.audits_id
-		where e.users_id = ${appraiserId} and e.status != 1 and e.current_responsible = ${appraiserId}`,
+			left join users u on u.id = e.users_id
+			where e.users_id = ${appraiserId} and e.status != 1 and e.current_responsible = ${appraiserId}`,
 			{ type: db.sequelize.QueryTypes.SELECT }
+
+
+		// 	SELECT 	e.id, e.status, e.date as finish_date,
+        // env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
+        // a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date,
+		// u.email
+        //     FROM evaluations e
+        //     inner join enviroments env on env.id = e.enviroments_id
+        //     inner join audits a on a.id = e.audits_id
+		// 	left join users u on u.id = e.users_id
+		// 	where e.users_id = 2 and e.status != 1 and e.current_responsible = 2
 		)
 	}
 	 
