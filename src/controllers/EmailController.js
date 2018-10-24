@@ -8,7 +8,7 @@ module.exports = class EmailController {
 	async sendEmail(token, user) {
 		const transporter = this.createTransport()
 
-		var url = `http://localhost:4000/new-password.html?token=${token}&id=${user.id}`
+		var url = `https://api-5s.herokuapp.com/new-password.html?token=${token}&id=${user.id}`
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
 			to: user.email, 
@@ -106,7 +106,7 @@ module.exports = class EmailController {
 			service: 'gmail',
 			auth: {
 				user: 'suportesenai5s@gmail.com',
-				pass: 'senai5s2018'
+				pass: process.env.EMAIL_PASSWORD
 			}
 		})
 	}
