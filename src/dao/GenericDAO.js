@@ -77,8 +77,8 @@ module.exports = class GenericDAO {
 	}
 
 	/* atualiza o status da avaliação */
-	updateStatus(model, evaluationId, status) {
-		return model.update({status: status}, {where: { id: evaluationId} })
+	updateEvaluation(model, evaluationId, status) {
+		return model.update({status: status, date: new Date()}, {where: { id: evaluationId} })
 	}
 
 	/* método responsável por atualizar a senha do usuário com criptografia */
