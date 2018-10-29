@@ -61,7 +61,6 @@ module.exports = class EvaluationController {
 
 	finishEvaluation(answer) {
 		var dto = []
-		console.log('comentsssss',answer);
 		answer.forEach(element => {
 			dto.push({
 				status: element.status ? 1 : 0, // 0 = negativo, 1 = positivo
@@ -131,8 +130,8 @@ module.exports = class EvaluationController {
 		}
 	}
 
-	updateStatus(status) {
-		return this.dao.updateStatus(models.Evaluation, this.req.params.id, status)
+	updateEvaluation(status) {
+		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, status)
 			.then(() => {
 				return this.res.status(200).json({
 					type: 'success',
