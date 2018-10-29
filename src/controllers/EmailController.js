@@ -1,5 +1,5 @@
 var nodemailer = require('nodemailer')
-
+var jwt = require('jsonwebtoken')
 module.exports = class EmailController {
 	constructor(req, res){
 		this.req = req
@@ -102,7 +102,10 @@ module.exports = class EmailController {
 	}
 
 	async sendEmailNewPassword(user) {
-		const NEW_PASSWORD_LINK = `http://localhost:8080/new-password.html?id=${user.id}`
+
+		let token = this.generateToken(user);
+
+		const NEW_PASSWORD_LINK = `http://localhost:8080/new-password.html?token=${token}&id=${user.id}`
 		const transporter = this.createTransport()
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
@@ -126,12 +129,17 @@ module.exports = class EmailController {
         
 	}
 
+	generateToken(user) {
+		var token = jwt.sign(user, process.env.SECRET_KEY);
+		return token;
+	}
+
 	createTransport() {
 		return nodemailer.createTransport({
 			service: 'gmail',
 			auth: {
 				user: 'suportesenai5s@gmail.com',
-				pass: 'senai@2018'
+				pass: process.env.EMAIL_PASSWORD
 			}
 		})
 	}
