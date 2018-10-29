@@ -14,9 +14,11 @@ module.exports = class UserController {
 	save(user) {
 		user.password = this.generateHash(user.password)
 		this.dao.save(models.User, user)
-			.then(() => {
+			.then((res) => {
 				return this.res.status(201).json({
-					type: 'success', message: 'Usuário salvo com sucesso!'
+					id: res.id,
+					type: 'success', 
+					message: 'Usuário salvo com sucesso!'
 				})
 			})
 			.catch((error) => {

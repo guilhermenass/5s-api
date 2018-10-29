@@ -14,4 +14,8 @@ router.post('/email/schedule', function(req, res){
 	new emailController(req, res).sendEmailSchedulingEvaluation(req.body)
 })
 
+router.post('/email/newPassword', function(req, res){
+	new emailController(req, res).sendEmailNewPassword(req.body)
+})
+
 module.exports = router
