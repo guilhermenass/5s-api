@@ -4,8 +4,7 @@ module.exports = class QuestionDAO {
 
 		return models.EnviromentTypeQuestion.findAll({
 			include: [{
-				model: models.Question,
-				require: true  
+				model: models.Question
 			}],  
 			where: {
 				enviroment_types_id: enviromentTypeId

@@ -100,8 +100,10 @@ module.exports = class Question {
 			.then(questions => {
 				if(questions.length == 0) 
 					return this.res.status(404).json({msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'})
-				else
+				else {
+					console.log('xxxxxxxxxxxxxxxx', questions)
 					return this.res.status(200).json(questions)
+				}
 			})
 			.catch((error) => {
 				return this.res.status(500).json({errorDetails: error})
