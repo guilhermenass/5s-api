@@ -3,7 +3,6 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var app = express()
 var jwt = require('express-jwt')
-
 const routes = require('./src/routes/routes')
 
 app.use(function(req, res, next) {
@@ -17,7 +16,16 @@ app.use(function(req, res, next) {
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use('/', express.static(__dirname + '/views'))
-app.use(jwt({ secret: process.env.SECRET_KEY}).unless({path: ['/authenticate', '/authenticateApp', '/verifyEmail', '/validateFirstAccess','/firstAccess','/newPassword/:token'] }))
+
+/* Tive que adicionar o path-to-regex, porque o unless não funciona muito bem para rotas com parametros */
+app.use(jwt({ secret: process.env.SECRET_KEY}).unless({
+	path: [
+		'/authenticate',
+		'/authenticateApp', 
+		'/verifyEmail',
+		'/validateFirstAccess',
+		'/firstAccess']
+	}))
 
 // routes
 app.use([
