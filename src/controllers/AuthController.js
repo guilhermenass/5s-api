@@ -86,39 +86,4 @@ module.exports = class AuthController {
 			this._res.status(500).send('Ocorreu um erro ao tentar realizar o login' + err)
 		}    
 	}
-
-	async validateFirstAccess(){
-		var email = this._req.body.email
-
-		try {
-			const data = await this.dao.loadByEmail(models.User, email)
-
-			if(data){
-				var isAuthenticated =  bcrypt.compareSync('newPasswordFirstAccess', data.password)
-				if(isAuthenticated){
-					var user = ({
-						id: data.id,
-						email: email,
-						name: data.name,
-						profile: data.profile
-					})
-					var token = jwt.sign(user, process.env.SECRET_KEY, {
-						expiresIn: 400000
-					})
-                    
-					this._res.json({
-						token: token,
-						isFirstAccess: true
-					})
-                    
-				}else
-					this._res.status(401).send('Usuario já realizou o primeiro acesso')
-                
-			} else 
-				this._res.status(401).send('Usuário não encontrado')
-			
-		} catch(err) {
-			this._res.status(500).send('Ocorreu um erro ao tentar realizar o login' + err)
-		}    
-	}
 }

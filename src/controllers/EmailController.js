@@ -1,4 +1,5 @@
 var nodemailer = require('nodemailer')
+var jwt = require('jsonwebtoken')
 module.exports = class EmailController {
 	constructor(req, res){
 		this.req = req
@@ -8,7 +9,7 @@ module.exports = class EmailController {
 	async sendEmail(token, user) {
 		const transporter = this.createTransport()
 
-		var url = `http://localhost:4000/new-password.html?token=${token}&id=${user.id}`
+		var url = `https://api-5s.herokuapp.com/new-password.html?token=${token}&id=${user.id}`
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
 			to: user.email, 
@@ -97,8 +98,40 @@ module.exports = class EmailController {
 			if(err)
 				response = false
 		})
+		return response   
+	}
+
+	async sendEmailNewPassword(user) {
+
+		let token = this.generateToken(user);
+
+		const NEW_PASSWORD_LINK = `http://localhost:8080/new-password.html?token=${token}&id=${user.id}`
+		const transporter = this.createTransport()
+		const mailOptions = {
+			from: 'SENAI 5S <suportesenai5s@gmail.com>',
+			to: user.email,
+			subject: 'Usuário criado com sucesso', 
+			html: `<p>Olá,</p>
+                  </br>
+                  <p>Um usuário foi cadastrado com o seu e-mail.</p></br>
+				  <p>Para concluir o cadastro, você deve cadastrar uma senha para o seu usuário, através do link: 
+				  </br>
+				  ${NEW_PASSWORD_LINK}
+                  </br>`
+		}
+
+		var response = true
+		await transporter.sendMail(mailOptions).then((data, err) => {
+			if(err)
+				response = false
+		})
 		return response
         
+	}
+
+	generateToken(user) {
+		var token = jwt.sign(user, process.env.SECRET_KEY);
+		return token;
 	}
 
 	createTransport() {
@@ -106,7 +139,7 @@ module.exports = class EmailController {
 			service: 'gmail',
 			auth: {
 				user: 'suportesenai5s@gmail.com',
-				pass: 'senai5s2018'
+				pass: process.env.EMAIL_PASSWORD
 			}
 		})
 	}
