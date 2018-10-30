@@ -3,8 +3,12 @@ module.exports = class QuestionDAO {
 	getQuestionsByEnviromentTypeId(models, enviromentTypeId) {
 
 		return models.EnviromentTypeQuestion.findAll({
+			attributes: {
+				exclude: ['enviroment_types_id', 'questions_id','Question']
+			},
 			include: [{
-				model: models.Question
+				model: models.Question,
+				attributes: ['id','sense','title','description']
 			}],  
 			where: {
 				enviroment_types_id: enviromentTypeId
