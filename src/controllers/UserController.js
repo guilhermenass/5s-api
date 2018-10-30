@@ -54,7 +54,6 @@ module.exports = class UserController {
 		if (user.password) {
 			var encryptedPassword = this.generateHash(user.password)
 
-			// model, userId, password
 			this.dao.updatePassword(models.User, user.id, encryptedPassword)
 				.then(() => {
 					return this.res.status(200).json({
@@ -128,78 +127,6 @@ module.exports = class UserController {
 				return this.res.status(201).json({ msg: 'E-mail enviado com sucesso para ' + email })
 		} else {
 			this.res.status(404).json({ msg: 'Este e-mail não existe na base de dados!' })
-		}
-	}
-
-
-	async validateFirstAccess() {
-		var email = this.req.body.email
-
-		try {
-			const data = await this.dao.loadByEmail(models.User, email)
-
-			if (data) {
-				var isAuthenticated = bcrypt.compareSync('newPasswordFirstAccess', data.password)
-
-				if (isAuthenticated) {
-					var user = ({
-						id: data.id,
-						email: email,
-						name: data.name,
-						profile: data.profile
-					})
-					jwt.sign(user, process.env.SECRET_KEY, {
-						expiresIn: 400000
-					})
-
-					this.res.json({
-						id: data.id,
-						isFirstAccess: true
-					})
-
-				} else
-					this.res.status(401).send('Usuario já realizou o primeiro acesso')
-
-			} else
-				this.res.status(401).send('Usuário não encontrado')
-
-		} catch (err) {
-			this.res.status(500).send('Ocorreu um erro ao tentar realizar o login' + err)
-		}
-	}
-
-	async firstAccess() {
-		var id = this.req.body.id
-		var password = this.req.body.password
-
-		try {
-			const data = await models.User.findOne({
-				where: {
-					id: id
-				}
-			})
-
-			if (data) {
-				password = this.generateHash(password)
-
-				return models.User.update({ password: password }, { where: { id: id } })
-					.then(() => {
-						return this.res.status(200).json({
-							type: 'success', message: 'Senha cadastrada com sucesso'
-						})
-					})
-					.catch((error) => {
-						return this.res.status(500).json({
-							type: 'error',
-							message: 'Ocorreu um erro ao realizar o primeiro acesso',
-							errorDetails: error
-						})
-					})
-			} else
-				this.res.status(401).send('Usuario já realizou o primeiro acesso')
-
-		} catch (err) {
-			this.res.status(500).send('Ocorreu um erro ao tentar realizar o login' + err)
 		}
 	}
 }
