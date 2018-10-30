@@ -1,7 +1,7 @@
 {
     "database": {
         "user": "postgres",
-        "password": "",
+        "password": "postgres",
         "name": "senai_5s",
         "host": "localhost"
     }
