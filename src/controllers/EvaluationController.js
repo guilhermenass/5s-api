@@ -154,7 +154,6 @@ module.exports = class EvaluationController {
 	}
 
 	updateEvaluation(status) {
-		console.log('###statuus',status)
 		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, status)
 			.then(() => {
 				return this.res.status(200).json({
