@@ -18,6 +18,10 @@ router.post('/evaluations/finish', function(req, res){
 	new evaluationController(req, res).finishEvaluation(req.body)
 })
 
+router.put('/evaluations/finish', function(req, res){
+	new evaluationController(req, res).updateAnswersEvaluation(req.body)
+})
+
 router.post('/evaluations/emailSuccessful', (req, res) => {
 	new evaluationController(req, res).sendEmailSuccessful()
 })

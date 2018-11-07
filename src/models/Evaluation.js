@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         * 0 Pendente com Avaliador
 		* 1 Pendente com Responsavel do ambiente
 		* 2 Concluida
+		* 3 Reavaliação
         */
 		status: {
 			type: DataTypes.INTEGER
