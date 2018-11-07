@@ -110,6 +110,19 @@ module.exports = class Question {
 			})
 	}
 
+	getQuestionsInRevaluation(evaluationId) {
+		new questionDAO().getQuestionsInRevaluation(evaluationId)
+			.then(questions => {
+				if(questions.length == 0) 
+					return this.res.status(404).json({msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'})
+				else
+					return this.res.status(200).json(questions)
+			})
+			.catch((error) => {
+				return this.res.status(500).json({errorDetails: error})
+			})
+	}
+
 	getNonCompliancesByEvaluationId(evaluationId) {
 		new questionDAO().getNonCompliancesByEvaluationId(evaluationId)
 			.then(questions => {

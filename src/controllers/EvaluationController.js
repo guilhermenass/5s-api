@@ -81,6 +81,29 @@ module.exports = class EvaluationController {
 				})
 			})
 	}
+	updateAnswersEvaluation(answer) {
+
+		answer.forEach(element => {
+			var obj ={
+				id: element.id,
+				status: element.status ? 1 : 0, // 0 = negativo, 1 = positivo
+				questions_id: element.questionId,
+				evaluations_id: element.evaluateId,
+				comments: element.comments
+			}
+			this.dao.update(models.Answer, obj)			
+				.then(() => {
+					return this.res.status(201).json({
+						type: 'success', message: 'Avaliação finalizada com sucesso!'
+					})
+				})
+				.catch((error) => {
+					return this.res.status(500).json({
+						type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
+					})
+				})
+		});
+	}
 
 	async sendEmailSuccessful() {
 		let isSent = false
@@ -131,6 +154,7 @@ module.exports = class EvaluationController {
 	}
 
 	updateEvaluation(status) {
+		console.log('###statuus',status)
 		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, status)
 			.then(() => {
 				return this.res.status(200).json({
