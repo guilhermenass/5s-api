@@ -129,7 +129,7 @@ module.exports = class EmailController {
         
 	}
 
-	sendRevaluationEmail(email) {
+	async sendRevaluationEmail(email) {
 		const transporter = this.createTransport()
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
