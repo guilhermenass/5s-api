@@ -105,7 +105,7 @@ module.exports = class EmailController {
 
 		let token = this.generateToken(user);
 
-		const NEW_PASSWORD_LINK = `http://localhost:8080/new-password.html?token=${token}&id=${user.id}`
+		const NEW_PASSWORD_LINK = `https://login-5s.herokuapp.com/new-password.html?token=${token}&id=${user.id}`
 		const transporter = this.createTransport()
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
@@ -128,6 +128,28 @@ module.exports = class EmailController {
 		return response
         
 	}
+
+	sendRevaluationEmail(email) {
+		const transporter = this.createTransport()
+		const mailOptions = {
+			from: 'SENAI 5S <suportesenai5s@gmail.com>',
+			to: email,
+			subject: 'Reavaliação 5S', 
+			html: `<p>Olá,</p>
+                  </br>
+                  <p>O ambiente que você avaliou está pronto para ser reavaliado. </p></br>
+                  <p>Acesse o aplicativo 5S e reavalie o ambiente novamente.
+                  </br>`
+		}
+
+		var response = true
+		await transporter.sendMail(mailOptions).then((data, err) => {
+			if(err)
+				response = false
+		})
+		return response
+	}
+
 
 	generateToken(user) {
 		var token = jwt.sign(user, process.env.SECRET_KEY);
