@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken')
-var bcrypt = require('bcrypt-nodejs')
+var bcrypt = require('bcrypt')
 var models = require('../models')
 var emailController = require('./EmailController')
 var genericDAO = require('../dao/GenericDAO')
