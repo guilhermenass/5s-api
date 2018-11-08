@@ -130,8 +130,8 @@ module.exports = class EvaluationController {
 		}
 	}
 
-	updateEvaluation(status) {
-		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, status)
+	updateEvaluation(status, responsibleId) {
+		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, responsibleId, status)
 			.then(() => {
 				return this.res.status(200).json({
 					type: 'success',
