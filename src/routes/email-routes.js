@@ -18,4 +18,8 @@ router.post('/email/newPassword', function(req, res){
 	new emailController(req, res).sendEmailNewPassword(req.body)
 })
 
+router.post('/email/revaluation', function(req, res){
+	new emailController(req, res).sendRevaluationEmail(req.body.email)
+})
+
 module.exports = router
