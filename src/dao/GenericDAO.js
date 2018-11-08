@@ -39,8 +39,8 @@ module.exports = class GenericDAO {
 	/* retorna as pendências de acordo com o id do avaliador */                                                                                                                                                                                                                                                           
 	loadByAppraiserId(appraiserId) {
 		return db.sequelize.query(
-			`SELECT e.id, e.status, e.date as finish_date,
-            env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
+			`SELECT e.id, e.status, e.date as finish_date, e.users_id,
+            env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id as responsible_id,
             a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date,
 			u.email
             FROM evaluations e
@@ -56,8 +56,8 @@ module.exports = class GenericDAO {
 	/* retorna as pendências de acordo com o id do responsável */                                                                                                                                                                                                                                                           
 	loadByResponsibleId(responsibleId) {
 		return db.sequelize.query(
-			`SELECT e.id, e.status, e.date as finish_date,
-			env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id, env.users_id,
+			`SELECT e.id, e.status, e.date as finish_date, e.users_id as responsible_id,
+			env.name as enviroment_name, env.block as enviroment_block, env.enviroment_types_id as enviroment_type_id,
 			a.title as audit_title, a.initial_date as audit_initial_date, a.due_date as audit_due_date,
 			u.email
 			FROM evaluations e
@@ -79,8 +79,8 @@ module.exports = class GenericDAO {
 	}
 
 	/* atualiza o status da avaliação */
-	updateEvaluation(model, evaluationId, status) {
-		return model.update({status: status, date: new Date()}, {where: { id: evaluationId} })
+	updateEvaluation(model, evaluationId, responsibleId, status) {
+		return model.update({status: status, date: new Date(), current_responsible: responsibleId}, {where: { id: evaluationId} })
 	}
 
 	/* método responsável por atualizar a senha do usuário com criptografia */
