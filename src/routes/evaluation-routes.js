@@ -33,3 +33,5 @@ router.put('/evaluations/:id', function(req, res) {
 router.post('/evaluations/emailWithNonCompliances', (req, res) => {
 	new evaluationController(req, res).sendEmailWithNonCompliances(req.body.nonCompliances)
 })
+
+module.exports = router;
