@@ -13,12 +13,15 @@ module.exports = class EnviromentController {
 		this.dao.save(models.Enviroment, enviroment)
 			.then(() => {
 				return this.res.status(201).json({
-					type: 'success', message: 'Ambiente salvo com sucesso!'
+					type: 'success',
+					message: 'Ambiente salvo com sucesso!'
 				})
 			})
 			.catch((error) => {       
 				return this.res.status(500).json({
-					type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
+					type: 'error',
+					message: 'Ocorreu um erro ao tentar salvar!',
+					errorDetails: error
 				})
 			})
 	}
@@ -37,12 +40,15 @@ module.exports = class EnviromentController {
 		this.dao.update(models.Enviroment, enviroment)
 			.then(() => {
 				return this.res.status(201).json({
-					type: 'success', message: 'Ambiente salvo com sucesso!'
+					type: 'success',
+					message: 'Ambiente salvo com sucesso!'
 				})
 			})
 			.catch((error) => {
 				return this.res.status(500).json({
-					type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
+					type: 'error',
+					message: 'Ocorreu um erro ao tentar salvar!',
+					errorDetails: error
 				})
 			})
 	}

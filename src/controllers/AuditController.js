@@ -25,12 +25,16 @@ module.exports = class AuditController {
 		this.dao.save(models.Audit, audit)
 			.then((res) => {
 				return this.res.status(201).json({
-					type: 'success', message: 'Auditoria salva com sucesso!', auditId: res.id
+					type: 'success',
+					message: 'Auditoria salva com sucesso!',
+					auditId: res.id
 				})
 			})
 			.catch((error) => {
 				return this.res.status(500).json({
-					type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
+					type: 'error',
+					message: 'Ocorreu um erro ao tentar salvar!',
+					errorDetails: error
 				})
 			})
 	}
@@ -39,12 +43,15 @@ module.exports = class AuditController {
 		this.dao.update(models.Audit, audit)
 			.then(() => {
 				return this.res.status(200).json({
-					type: 'success', message: 'Auditoria salva com sucesso!'
+					type: 'success',
+					message: 'Auditoria salva com sucesso!'
 				})
 			})
 			.catch((error) => {
 				return this.res.status(500).json({
-					type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
+					type: 'error',
+					message: 'Ocorreu um erro ao tentar salvar!',
+					errorDetails: error
 				})
 			})
 	}
@@ -54,16 +61,20 @@ module.exports = class AuditController {
 			.then((deletedRecord) => {
 				if(deletedRecord)
 					return this.res.status(200).json({
-						type: 'success', message: 'Exclusão realizada com sucesso!'
+						type: 'success',
+						message: 'Exclusão realizada com sucesso!'
 					}) 
 				else
 					return this.res.status(404).json({
-						type: 'error', message: 'Registro não encontrado!'
+						type: 'error',
+						message: 'Registro não encontrado!'
 					})        
 			})
 			.catch((error) => {
 				return this.res.status(500).json({
-					type: 'error', message: 'Erro de servidor!', errorDetails: error
+					type: 'error',
+					message: 'Erro de servidor!',
+					errorDetails: error
 				}) 
 			})
 	}

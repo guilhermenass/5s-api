@@ -17,7 +17,6 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use('/', express.static(__dirname + '/views'))
 
-/* Tive que adicionar o path-to-regex, porque o unless não funciona muito bem para rotas com parametros */
 app.use(jwt({ secret: process.env.SECRET_KEY}).unless({
 	path: [
 		'/authenticate',
@@ -27,7 +26,6 @@ app.use(jwt({ secret: process.env.SECRET_KEY}).unless({
 		'/firstAccess']
 	}))
 
-// routes
 app.use([
 	routes.usersRoutes,
 	routes.unitsRoutes,
