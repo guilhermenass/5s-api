@@ -7,6 +7,7 @@ module.exports = class EnviromentController {
 		this.req = req
 		this.res = res
 		this.dao = new genericDAO()
+		this._enviromentDAO = new enviromentDAO();
 	}
 
 	save(enviroment){
@@ -83,11 +84,7 @@ module.exports = class EnviromentController {
 	}
 
 	loadEnviromentsByUnit() {
-		models.Enviroment.findAll({
-			where: {
-				units_id: this.req.params.unitId
-			}
-		})
+		this._enviromentDAO.loadEnviromentsByUnit(this.req.params.unitId)
 		.then(enviroments => {
 			return this.res.status(200).json(enviroments)
 		})
