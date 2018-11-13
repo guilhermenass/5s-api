@@ -38,12 +38,15 @@ module.exports = class Question {
 		this.dao.update(models.Question, question)
 		.then(() => {
 			return this.res.status(200).json({
-				type: 'success', message: 'Pergunta salva com sucesso!'
+				type: 'success',
+				message: 'Pergunta salva com sucesso!'
 			})
 		})
 		.catch((error) => {
 			return this.res.status(500).json({
-				type: 'error', message: 'Ocorreu um erro ao tentar atualizar', errorDetails: error
+				type: 'error',
+				message: 'Ocorreu um erro ao tentar atualizar',
+				errorDetails: error
 			})
 		})
 	}
@@ -53,15 +56,21 @@ module.exports = class Question {
 		.then((deletedRecord) => {
 			if(deletedRecord)
 				return this.res.status(200).json({
-					type: 'success', message: 'Pergunta removida com sucesso!'
+					type: 'success',
+					message: 'Pergunta removida com sucesso!'
 				})         
 			else
 				return this.res.status(404).json({
-					type: 'error', message: 'Registro não encontrado!'
+					type: 'error',
+					message: 'Registro não encontrado!'
 				}) 
 		})
 		.catch((error) => {
-			return this.res.status(500).json({type: 'error', message: 'Erro de servidor', errorDetails: error}) 
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Não é possível remover essa pergunta, porque ela já foi respondida em uma avaliação.',
+				errorDetails: error
+			}) 
 		})
 	}
 
@@ -70,23 +79,17 @@ module.exports = class Question {
 		relatedIds.enviromentTypeId.forEach(envtypeId => {
 			idsToInsert.push({questions_id: relatedIds.questionId, enviroment_types_id: envtypeId})
 		})
-		models.EnviromentTypeQuestion.bulkCreate(idsToInsert)
-			.then(() => {})
-			.catch((error) => {   
-				return this.res.status(500).json({errorDetails: error})       
-			})
+		this.dao.bulkCreate(models.EnviromentTypeQuestion, idsToInsert)
+		.then(() => {})
+		.catch((error) => {   
+			return this.res.status(500).json({
+				errorDetails: error
+			})       
+		})
 	}
 
 	getRelatedItems(question) {
-		models.EnviromentTypeQuestion.findAll({
-			include: [{
-				model: models.Question,
-				require: true  
-			}],
-			where: {
-				questions_id: question.id 
-			}
-		})
+		this.dao.loadAssociatedItems(question.id)
 		.then(questions => {
 			return this.res.status(200).json(questions)
 		})
@@ -99,7 +102,9 @@ module.exports = class Question {
 		new questionDAO().getQuestionsByEnviromentTypeId(models, enviromentTypeId)
 		.then(questions => {
 			if(questions.length == 0) 
-				return this.res.status(404).json({msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'})
+				return this.res.status(404).json({
+					msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'
+				})
 			else {
 				return this.res.status(200).json(questions)
 			}
@@ -113,7 +118,9 @@ module.exports = class Question {
 		new questionDAO().getQuestionsInRevaluation(evaluationId)
 		.then(questions => {
 			if(questions.length == 0) 
-				return this.res.status(404).json({msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'})
+				return this.res.status(404).json({
+					msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'
+				})
 			else
 				return this.res.status(200).json(questions)
 		})
@@ -126,7 +133,9 @@ module.exports = class Question {
 		new questionDAO().getNonCompliancesByEvaluationId(evaluationId)
 		.then(questions => {
 			if(questions.length == 0) 
-				return this.res.status(404).json({msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'})
+				return this.res.status(404).json({
+					msg: 'Nenhuma pergunta foi cadastrada para este tipo de ambiente'
+				})
 			else
 				return this.res.status(200).json(questions)
 		})

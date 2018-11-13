@@ -6,6 +6,7 @@ var path = require('path')
 
 const sequelize = new Sequelize(settings.database.name, settings.database.user, settings.database.password, {
 	host: settings.database.host,
+	port: settings.database.port,
 	dialect: 'postgres',
 	dialectOptions: {
 		ssl: false

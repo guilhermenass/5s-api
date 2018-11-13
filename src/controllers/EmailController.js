@@ -113,7 +113,7 @@ module.exports = class EmailController {
 			subject: 'Usuário criado com sucesso', 
 			html: `<p>Olá,</p>
                   </br>
-                  <p>Um usuário foi cadastrado com o seu e-mail.</p></br>
+                  <p>Um usuário foi cadastrado com o seu e-mail no SENAI 5s.</p></br>
 				  <p>Para concluir o cadastro, você deve cadastrar uma senha para o seu usuário, através do link: 
 				  </br>
 				  ${NEW_PASSWORD_LINK}

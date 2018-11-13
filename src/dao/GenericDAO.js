@@ -29,6 +29,19 @@ module.exports = class GenericDAO {
     
 	}
 
+	/* método que carrega dados da tabela associativa enviroment_types_has_questions */
+	loadAssociatedItems(questionId) {
+		models.EnviromentTypeQuestion.findAll({
+			include: [{
+				model: models.Question,
+				require: true  
+			}],
+			where: {
+				questions_id: questionId 
+			}
+		})
+	}
+
 	/* método que busca os usuários sem o atributo senha */
 	loadWithoutPassword(model) {
 		return model.findAll({
@@ -49,7 +62,6 @@ module.exports = class GenericDAO {
 			left join users u on u.id = e.users_id
 			where e.users_id = ${appraiserId} and e.status != 1 and e.current_responsible = ${appraiserId}`,
 			{ type: db.sequelize.QueryTypes.SELECT }
-
 		)
 	}
 	 
@@ -68,11 +80,43 @@ module.exports = class GenericDAO {
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
-	/* remove um determinado registro de acordo com o id */
-	remove(model, id) {
-		return model.destroy({ where: { id: id} })
+
+	loadEnviromentsTypeByUnit(unitId) {
+		return db.sequelize.query(
+			'select distinct et.name, et.id from enviroments e ' +
+            'inner join enviroment_types et on et.id = e.enviroment_types_id ' +
+            'where e.units_id = ' + unitId,
+			{ type: db.sequelize.QueryTypes.SELECT })
 	}
-    
+
+	/**
+	 * 
+	 * @param {Model do banco de dados} model 
+	 * @param {Identificador do registro que será deletado} id 
+	 * @param {Se for nula, pega a coluna id, se não for, pega o parametro passado} paramName 
+	 */
+	remove(model, id) {
+		return model.destroy({
+			where: { 
+				id : id
+			}
+		})
+	}
+
+	/**
+	 * 
+	 * @param {Entidade a ser manipulada} model 
+	 * @param {Identificador da questão} questionId 
+	 */
+	removeAssociatedItems(model, questionId) {
+		return model.destroy({
+			where: { 
+				questions_id : questionId
+			}
+		})
+	}
+
+
 	/* atualiza dados de uma entidade de acordo com um id */
 	update(model, entity) {
 		return model.update(entity, { where: { id: entity.id } })
@@ -80,14 +124,24 @@ module.exports = class GenericDAO {
 
 	/* atualiza o status da avaliação */
 	updateEvaluation(model, evaluationId, responsibleId, status) {
-		return model.update({status: status, date: new Date(), current_responsible: responsibleId}, {where: { id: evaluationId} })
+		return model.update(
+		{
+			status: status,
+			date: new Date(),
+			current_responsible: responsibleId
+		},
+		{
+			where: { 
+				id: evaluationId
+			} 
+		})
 	}
 
 	/* método responsável por atualizar a senha do usuário com criptografia */
 	updatePassword(model, userId, password) {
 		return model.update({ password: password },
-			{ 
-				where: { id: userId }
-			})
+		{ 
+			where: { id: userId }
+		})
 	}
 }

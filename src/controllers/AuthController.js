@@ -72,11 +72,9 @@ module.exports = class AuthController {
 							isAuth: true,
 							profile: data.profile
 						})
-					}else {
-						this._res.status(401).send('Usuário não permitido')
-					}
-                    
-				}else
+					} else
+						this._res.status(401).send('Usuário não autorizado')
+				} else
 					this._res.status(401).send('Dados incorretos')
                 
 			} else 

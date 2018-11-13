@@ -4,6 +4,7 @@ var bodyParser = require('body-parser')
 var app = express()
 var jwt = require('express-jwt')
 const routes = require('./src/routes/routes')
+var isProduction = process.env.NODE_ENV == 'production';
 
 app.use(function(req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*')
@@ -17,7 +18,6 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use('/', express.static(__dirname + '/views'))
 
-/* Tive que adicionar o path-to-regex, porque o unless não funciona muito bem para rotas com parametros */
 app.use(jwt({ secret: process.env.SECRET_KEY}).unless({
 	path: [
 		'/authenticate',
@@ -27,7 +27,6 @@ app.use(jwt({ secret: process.env.SECRET_KEY}).unless({
 		'/firstAccess']
 	}))
 
-// routes
 app.use([
 	routes.usersRoutes,
 	routes.unitsRoutes,
@@ -42,3 +41,15 @@ app.use([
 app.listen(process.env.PORT || 4000, function(){
 	console.log('server is up')
 })  
+
+if (isProduction) {
+	process.env.API_URL = 'https://api-5s.herokuapp.com/';
+	process.env.WEB_URL = 'https://web-5s.herokuapp.com/';
+	process.env.LOGIN_URL = 'https://login-5s.herokuapp.com/';
+}
+else {
+	process.env.API_URL = 'http://localhost:4000/';
+	process.env.WEB_URL = 'http://localhost:4200/';
+	process.env.LOGIN_URL = 'http://localhost:8080/';
+}
+
