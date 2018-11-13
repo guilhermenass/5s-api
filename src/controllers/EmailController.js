@@ -9,7 +9,7 @@ module.exports = class EmailController {
 	async sendEmail(token, user) {
 		const transporter = this.createTransport()
 
-		var url = `http://localhost:8080/new-password.html?token=${token}&id=${user.id}`
+		var url = `${process.env.LOGIN_URL}/new-password.html?token=${token}&id=${user.id}`
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
 			to: user.email, 
@@ -104,8 +104,7 @@ module.exports = class EmailController {
 	async sendEmailNewPassword(user) {
 
 		let token = this.generateToken(user);
-
-		const NEW_PASSWORD_LINK = `http://localhost:8080/new-password.html?token=${token}&id=${user.id}`
+		const NEW_PASSWORD_LINK = `${process.env.LOGIN_URL}/new-password.html?token=${token}&id=${user.id}`
 		const transporter = this.createTransport()
 		const mailOptions = {
 			from: 'SENAI 5S <suportesenai5s@gmail.com>',
