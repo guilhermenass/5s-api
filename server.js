@@ -42,6 +42,10 @@ app.listen(process.env.PORT || 4000, function(){
 	console.log('server is up')
 })  
 
+
+/* método que verifica as url's de acordo com o ambiente 
+* TODO: Rever melhor forma para fazer isso
+*/
 if (isProduction) {
 	process.env.API_URL = 'https://api-5s.herokuapp.com/';
 	process.env.WEB_URL = 'https://web-5s.herokuapp.com/';
