@@ -78,7 +78,7 @@ module.exports = class EnviromentTypeController {
 	}
 
 	removeAssociatedItems(questionId) {
-		this.dao.removeAssociatedItems(questionId)
+		this.dao.removeAssociatedItems(models.EnviromentTypeQuestion, questionId, 'questions_id')
 		.then(() => {
 			return this.res.status(200).json({
 				type: 'success',

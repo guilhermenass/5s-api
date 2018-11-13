@@ -68,7 +68,7 @@ module.exports = class Question {
 		.catch((error) => {
 			return this.res.status(500).json({
 				type: 'error',
-				message: 'Ocorreu um erro ao tentar remover',
+				message: 'Não é possível remover essa pergunta, porque ela já foi respondida em uma avaliação.',
 				errorDetails: error
 			}) 
 		})

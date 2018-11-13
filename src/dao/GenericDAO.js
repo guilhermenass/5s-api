@@ -95,14 +95,27 @@ module.exports = class GenericDAO {
 	 * @param {Identificador do registro que será deletado} id 
 	 * @param {Se for nula, pega a coluna id, se não for, pega o parametro passado} paramName 
 	 */
-	remove(model, id, paramName = null) {
-		paramName = paramName ? paramName : 'id';
+	remove(model, id) {
 		return model.destroy({
 			where: { 
-				paramName : id
+				id : id
 			}
 		})
 	}
+
+	/**
+	 * 
+	 * @param {Entidade a ser manipulada} model 
+	 * @param {Identificador da questão} questionId 
+	 */
+	removeAssociatedItems(model, questionId) {
+		return model.destroy({
+			where: { 
+				questions_id : questionId
+			}
+		})
+	}
+
 
 	/* atualiza dados de uma entidade de acordo com um id */
 	update(model, entity) {
