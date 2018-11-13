@@ -73,7 +73,7 @@ module.exports = class AuditController {
 			.catch((error) => {
 				return this.res.status(500).json({
 					type: 'error',
-					message: 'Erro de servidor!',
+					message: 'Ocorreu um erro ao tentar remover',
 					errorDetails: error
 				}) 
 			})

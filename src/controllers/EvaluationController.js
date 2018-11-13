@@ -22,26 +22,26 @@ module.exports = class EvaluationController {
 
 	loadByAppraiserId(appraiserId) {
 		this.dao.loadByAppraiserId(appraiserId)
-			.then(evaluations => {
-				return this.res.json(evaluations)
+		.then(evaluations => {
+			return this.res.json(evaluations)
+		})
+		.catch((error) => {
+			return this.res.status(400).json({
+				errorDetails: error
 			})
-			.catch((error) => {
-				return this.res.status(400).json({
-					errorDetails: error
-				})
-			})
+		})
 	}
 
 	loadByResponsibleId(responsibleId) {
 		this.dao.loadByResponsibleId(responsibleId)
-			.then(evaluations => {
-				return this.res.json(evaluations)
+		.then(evaluations => {
+			return this.res.json(evaluations)
+		})
+		.catch((error) => {
+			return this.res.status(400).json({
+				errorDetails: error
 			})
-			.catch((error) => {
-				return this.res.status(400).json({
-					errorDetails: error
-				})
-			})
+		})
 	}
 
 	createDto(audit) {
@@ -55,7 +55,6 @@ module.exports = class EvaluationController {
 				status: 0
 			})
 		})
-
 		return auditDto
 	}
 
@@ -70,19 +69,21 @@ module.exports = class EvaluationController {
 			})
 		})
 		this.dao.bulkCreate(models.Answer, dto)
-			.then(() => {
-				return this.res.status(201).json({
-					type: 'success', message: 'Avaliação finalizada com sucesso!'
-				})
+		.then(() => {
+			return this.res.status(201).json({
+				type: 'success',
+				message: 'Avaliação finalizada com sucesso!'
 			})
-			.catch((error) => {
-				return this.res.status(500).json({
-					type: 'error', message: 'Ocorreu um erro ao salvar!', errorDetails: error
-				})
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao salvar!',
+				errorDetails: error
 			})
+		})
 	}
 	updateAnswersEvaluation(answer) {
-
 		answer.forEach(element => {
 			var obj ={
 				id: element.id,
@@ -92,16 +93,18 @@ module.exports = class EvaluationController {
 				comments: element.comments
 			}
 			this.dao.update(models.Answer, obj)			
-				.then(() => {
-					return this.res.status(201).json({
-						type: 'success', message: 'Avaliação finalizada com sucesso!'
-					})
+			.then(() => {
+				return this.res.status(201).json({
+					type: 'success',
 				})
-				.catch((error) => {
-					return this.res.status(500).json({
-						type: 'error', message: 'Ocorreu um erro ao tentar salvar!', errorDetails: error
-					})
+			})
+			.catch((error) => {
+				return this.res.status(500).json({
+					type: 'error',
+					message: 'Ocorreu um erro ao tentar salvar!',
+					errorDetails: error
 				})
+			})
 		});
 	}
 
@@ -111,12 +114,15 @@ module.exports = class EvaluationController {
 			isSent = await new emailController().sendEmailSuccessfulEvaluation()
 			if (isSent) {
 				return this.res.status(200).json({
-					type: 'success', message: 'E-mail enviado para o avaliador'
+					type: 'success',
+					message: 'E-mail enviado para o avaliador'
 				})
 			}
 		} catch (error) {
 			return this.res.status(500).json({
-				type: 'error', message: 'Ocorreu um erro no envio do e-mail', errorDetails: error
+				type: 'error',
+				message: 'Ocorreu um erro no envio do e-mail',
+				errorDetails: error
 			})
 		}
 	}
@@ -127,12 +133,15 @@ module.exports = class EvaluationController {
 			isSent = await new emailController().sendEmailWithNonCompliances(nonCompliances)
 			if (isSent) {
 				return this.res.status(200).json({
-					type: 'success', message: 'E-mail enviado para o avaliador'
+					type: 'success',
+					message: 'E-mail enviado para o avaliador'
 				})
 			}
 		} catch (error) {
 			return this.res.status(500).json({
-				type: 'error', message: 'Ocorreu um erro no envio do e-mail', errorDetails: error
+				type: 'error',
+				message: 'Ocorreu um erro no envio do e-mail',
+				errorDetails: error
 			})
 		}
 	}
@@ -143,31 +152,52 @@ module.exports = class EvaluationController {
 			isSent = await new emailController().sendEmailSchedulingEvaluation()
 			if (isSent) {
 				return this.res.status(200).json({
-					type: 'success', message: 'E-mail enviado para o avaliador'
+					type: 'success',
+					message: 'E-mail enviado para o avaliador'
 				})
 			}
 		} catch (error) {
 			return this.res.status(500).json({
-				type: 'error', message: 'Ocorreu um erro no envio do e-mail', errorDetails: error
+				type: 'error',
+				message: 'Ocorreu um erro no envio do e-mail',
+				errorDetails: error
 			})
 		}
 	}
 
 	updateEvaluation(status, responsibleId) {
+		let message = this.getMessage(status);
 		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, responsibleId, status)
-			.then(() => {
-				return this.res.status(200).json({
-					type: 'success',
-					message: 'A avaliação foi concluída com sucesso!'
-				})
+		.then(() => {
+			return this.res.status(200).json({
+				type: 'success',
+				message: message
 			})
-			.catch((error) => {
-				return this.req.status(500).json({
-					type: 'error',
-					message: 'Ocorreu um erro ao atualizar o status',
-					errorDetails: error
-				})
+		})
+		.catch((error) => {
+			return this.req.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao atualizar o status',
+				errorDetails: error
 			})
+		})
+	}
+
+	/**
+	 * Método que retorna a mensagem que informa se a avaliação foi concluida ou está
+	 * pendente com o responsável do ambiente.
+	 * @param {Status da avaliação} status 
+	 */ 
+	getMessage(status) {
+		let message = "";
+		if(status == 1)
+			message = "A avaliação foi transferida para o responsável do ambiente, para corrigir as não conformidades encontradas";
+		else if(status == 2)
+			message = "Avaliação concluída com sucesso";
+		else 
+			message = "Avaliação está disponível para reavaliação do avaliador";
+		
+		return message;
 	}
 }
 

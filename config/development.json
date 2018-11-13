@@ -3,6 +3,7 @@
         "user": "postgres",
         "password": "postgres",
         "name": "senai_5s",
-        "host": "localhost"
+        "host": "localhost",
+        "port": 5433
     }
 }

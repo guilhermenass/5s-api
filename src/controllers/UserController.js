@@ -12,7 +12,6 @@ module.exports = class UserController {
 	}
 
 	save(user) {
-		user.password = this.generateHash(user.password)
 		this.dao.save(models.User, user)
 			.then((res) => {
 				return this.res.status(201).json({
@@ -35,68 +34,73 @@ module.exports = class UserController {
 			delete user.password
 
 		this.dao.update(models.User, user)
+		.then(() => {
+			return this.res.status(200).json({
+				type: 'success',
+				message: 'Usuário salvo com sucesso'
+			})
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao atualizar o usuário',
+				errorDetails: error
+			})
+		})
+	}
+
+	updatePassword(user) {
+		if (user.password) {
+			var encryptedPassword = this.generateHash(user.password)
+			this.dao.updatePassword(models.User, user.id, encryptedPassword)
 			.then(() => {
 				return this.res.status(200).json({
-					type: 'success', message: 'Usuário salvo com sucesso'
+					type: 'success',
+					message: 'Senha alterada com sucesso'
 				})
 			})
 			.catch((error) => {
 				return this.res.status(500).json({
 					type: 'error',
-					message: 'Ocorreu um erro ao atualizar o usuário',
+					message: 'Ocorreu um erro ao atualizar a senha',
 					errorDetails: error
 				})
 			})
-	}
-
-	updatePassword(user) {
-
-		if (user.password) {
-			var encryptedPassword = this.generateHash(user.password)
-
-			this.dao.updatePassword(models.User, user.id, encryptedPassword)
-				.then(() => {
-					return this.res.status(200).json({
-						type: 'success', message: 'Senha alterada com sucesso'
-					})
-				})
-				.catch((error) => {
-					return this.res.status(500).json({
-						type: 'error',
-						message: 'Ocorreu um erro ao atualizar a senha',
-						errorDetails: error
-					})
-				})
 		}
 	}
 
 	load() {
 		this.dao.loadWithoutPassword(models.User)
-			.then(users => {
-				return this.res.json(users)
-			})
-			.catch((error) => {
-				return this.res.status(500).json({ errorDetails: error })
-			})
+		.then(users => {
+			return this.res.json(users)
+		})
+		.catch((error) => {
+			return this.res.status(500).json({ errorDetails: error })
+		})
 	}
 
 	remove() {
 		this.dao.remove(models.User, this.req.params.id)
-			.then((deletedRecord) => {
-				if (deletedRecord)
-					return this.res.status(200).json({
-						type: 'success', message: 'Removido com sucesso!'
-					})
-				else
-					return this.res.status(404).json({
-						type: 'error', message: 'Registro não encontrado!'
-					})
-			})
-			.catch((error) => {
-				return this.res.status(500).json({
-					type: 'error', message: 'Erro de servidor', errorDetails: error
+		.then((deletedRecord) => {
+			if (deletedRecord) {
+				return this.res.status(200).json({
+					type: 'success',
+					message: 'Removido com sucesso!'
 				})
+			} else {
+				return this.res.status(404).json({
+					type: 'error', 
+					message: 'Registro não encontrado!'
+				})
+			}
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao tentar remover',
+				errorDetails: error
 			})
+		})
 	}
 
 	generateHash(password) {
@@ -124,9 +128,13 @@ module.exports = class UserController {
 
 			const emailWasSent = await new emailController().sendEmail(token, user)
 			if (emailWasSent)
-				return this.res.status(201).json({ msg: 'E-mail enviado com sucesso para ' + email })
+				return this.res.status(201).json({ 
+					msg: 'E-mail enviado com sucesso para ' + email 
+				})
 		} else {
-			this.res.status(404).json({ msg: 'Este e-mail não existe na base de dados!' })
+			this.res.status(404).json({
+				msg: 'Este e-mail não existe na base de dados!'
+			})
 		}
 	}
 }

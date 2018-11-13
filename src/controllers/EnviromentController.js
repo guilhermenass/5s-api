@@ -11,65 +11,75 @@ module.exports = class EnviromentController {
 
 	save(enviroment){
 		this.dao.save(models.Enviroment, enviroment)
-			.then(() => {
-				return this.res.status(201).json({
-					type: 'success',
-					message: 'Ambiente salvo com sucesso!'
-				})
+		.then(() => {
+			return this.res.status(201).json({
+				type: 'success',
+				message: 'Ambiente salvo com sucesso!'
 			})
-			.catch((error) => {       
-				return this.res.status(500).json({
-					type: 'error',
-					message: 'Ocorreu um erro ao tentar salvar!',
-					errorDetails: error
-				})
+		})
+		.catch((error) => {       
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao tentar salvar!',
+				errorDetails: error
 			})
+		})
 	}
 
 	load(){ 
 		new enviromentDAO().load()
-			.then(enviroments => {
-				return this.res.json(enviroments)  
+		.then(enviroments => {
+			return this.res.json(enviroments)  
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				errorDetails: error
 			})
-			.catch((error) => {
-				return this.res.status(500).json({errorDetails: error})
-			})
+		})
 	}
 
 	update(enviroment){
 		this.dao.update(models.Enviroment, enviroment)
-			.then(() => {
-				return this.res.status(201).json({
-					type: 'success',
-					message: 'Ambiente salvo com sucesso!'
-				})
+		.then(() => {
+			return this.res.status(201).json({
+				type: 'success',
+				message: 'Ambiente salvo com sucesso!'
 			})
-			.catch((error) => {
-				return this.res.status(500).json({
-					type: 'error',
-					message: 'Ocorreu um erro ao tentar salvar!',
-					errorDetails: error
-				})
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao tentar salvar!',
+				errorDetails: error
 			})
+		})
 	}
 
 	remove(){
 		this.dao.remove(models.Enviroment, this.req.params.id)
-			.then((deletedRecord) => {
-				if(deletedRecord)
-					return this.res.status(200).json({
-						type: 'success', status: 200, message: 'Removido com sucesso!'
-					})         
-				else
-					return this.res.json({
-						type: 'error', status: 404, message: 'Registro não encontrado!'
-					}) 
-			})
-			.catch((error) => {
+		.then((deletedRecord) => {
+			if(deletedRecord) {
+				return this.res.status(200).json({
+					type: 'success',
+					status: 200,
+					message: 'Ambiente removido com sucesso!'
+				})         
+			} else {
 				return this.res.json({
-					type: 'error', status: 500, message: 'Erro de servidor', errorDetails: error
-				}) 
-			})
+					type: 'error',
+					status: 404,
+					message: 'Registro não encontrado!'
+				})
+			}
+		})
+		.catch((error) => {
+			return this.res.json({
+				type: 'error',
+				status: 500,
+				message: 'Ocorreu um erro ao tentar remover',
+				errorDetails: error
+			}) 
+		})
 	}
 
 	loadEnviromentsByUnit() {
@@ -78,13 +88,15 @@ module.exports = class EnviromentController {
 				units_id: this.req.params.unitId
 			}
 		})
-			.then(enviroments => {
-				return this.res.status(200).json(enviroments)
+		.then(enviroments => {
+			return this.res.status(200).json(enviroments)
+		})
+		.catch((error) =>{
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao tentar remover',
+				errorDetails: error
 			})
-			.catch((error) =>{
-				return this.res.status(500).json({
-					type: 'error', message: 'Erro de servidor', errorDetails: error
-				})
-			})
+		})
 	}
 }
