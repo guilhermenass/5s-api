@@ -90,15 +90,19 @@ module.exports = class GenericDAO {
 	}
 
 	/**
-	 * 
+	 * Método genérico para exclusão lógica dos dados
 	 * @param {Model do banco de dados} model 
 	 * @param {Identificador do registro que será deletado} id 
 	 * @param {Se for nula, pega a coluna id, se não for, pega o parametro passado} paramName 
 	 */
 	remove(model, id) {
-		return model.destroy({
-			where: { 
-				id : id
+		return model.update(
+			{
+				is_active: false
+			},
+			{
+			where: {
+				id: id
 			}
 		})
 	}
@@ -115,7 +119,6 @@ module.exports = class GenericDAO {
 			}
 		})
 	}
-
 
 	/* atualiza dados de uma entidade de acordo com um id */
 	update(model, entity) {
