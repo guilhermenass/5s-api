@@ -22,9 +22,7 @@ app.use(jwt({ secret: process.env.SECRET_KEY}).unless({
 	path: [
 		'/authenticate',
 		'/authenticateApp', 
-		'/verifyEmail',
-		'/validateFirstAccess',
-		'/firstAccess']
+		'/verifyEmail']
 	}))
 
 app.use([
