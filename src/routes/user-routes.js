@@ -11,10 +11,6 @@ router.post('/validateFirstAccess', function(req, res) {
 	new userController(req, res).validateFirstAccess()
 })
 
-router.post('/firstAccess', function(req, res) {
-	new userController(req, res).firstAccess()
-})
-
 router.post('/users', function(req, res) {
 	new userController(req, res).save(req.body)
 })
@@ -30,6 +26,10 @@ router.put('/updatePassword/:id', function(req, res){
 router.get('/users', function(req, res){
 	new userController(req, res).load()
 })  
+
+router.get('/users/:unitId', function(req, res) {
+	new userController(req, res).loadResponsiblesByUnit(req.params.unitId);
+})
 
 router.delete('/users/:id', function(req, res){
 	new userController(req, res).remove()

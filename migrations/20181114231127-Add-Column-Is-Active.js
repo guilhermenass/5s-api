@@ -58,5 +58,8 @@ module.exports = {
         defaultValue: true
       }
     )
+  },
+  down: (queryInterface, Sequelize) =>{
+
   }
 };

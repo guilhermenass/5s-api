@@ -9,5 +9,9 @@ module.exports = {
         type: Sequelize.CHAR(2)
       }
     )
+  },
+
+  down: (queryInterface, Sequelize) =>{
+
   }
 };

@@ -30,8 +30,8 @@ module.exports = class GenericDAO {
 
 
 	/* método que carrega dados da tabela associativa enviroment_types_has_questions */
-	loadAssociatedItems(models, questionId) {
-		return models.EnviromentTypeQuestion.findAll({
+	loadAssociatedItems(model, questionId) {
+		return model.findAll({
 			include: [{
 				model: models.Question,
 				require: true  
@@ -95,6 +95,16 @@ module.exports = class GenericDAO {
 			'where e.units_id = ' ${unitId}
 			'and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT })
+	}
+
+	loadResponsiblesByUnit(unitId) {
+		return db.sequelize.query(
+			`select u.id, u.name from users u
+			 where units_id = ${unitId}
+			 and profile > 3
+			 and is_active = true`,
+			{ type: db.sequelize.QueryTypes.SELECT}
+		)
 	}
 
 	/**
