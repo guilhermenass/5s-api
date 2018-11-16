@@ -21,7 +21,7 @@ module.exports = class EnviromentDAO {
 			`select e.id, e.name from enviroments e
 			where e.enviroment_types_id in 
 			(select etqh.enviroment_types_id from enviroment_types_has_questions etqh)
-			and e.units_id = ${unitId}`,
+			and e.units_id = ${unitId} and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}

@@ -63,7 +63,9 @@ module.exports = class GenericDAO {
             inner join enviroments env on env.id = e.enviroments_id
             inner join audits a on a.id = e.audits_id
 			left join users u on u.id = e.users_id
-			where e.users_id = ${appraiserId} and e.status != 1 and e.current_responsible = ${appraiserId}`,
+			where e.users_id = ${appraiserId} and e.status != 1 
+			and e.current_responsible = ${appraiserId}
+			and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
@@ -79,16 +81,19 @@ module.exports = class GenericDAO {
 			inner join enviroments env on env.id = e.enviroments_id
 			inner join audits a on a.id = e.audits_id
 			left join users u on u.id = e.users_id
-			where env.users_id = ${responsibleId} and e.status = 1 and e.current_responsible = ${responsibleId}`,
+			where env.users_id = ${responsibleId}
+			and e.status = 1 and e.current_responsible = ${responsibleId}
+			and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
 
 	loadEnviromentsTypeByUnit(unitId) {
 		return db.sequelize.query(
-			'select distinct et.name, et.id from enviroments e ' +
-            'inner join enviroment_types et on et.id = e.enviroment_types_id ' +
-            'where e.units_id = ' + unitId,
+			`select distinct et.name, et.id from enviroments e ' 
+            'inner join enviroment_types et on et.id = e.enviroment_types_id ' 
+			'where e.units_id = ' ${unitId}
+			'and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT })
 	}
 
