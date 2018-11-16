@@ -51,12 +51,23 @@ module.exports = (sequelize, DataTypes) => {
 		is_active: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: true
+		},
+
+		/**
+		 * Identificador da unidade (Chave estrangeira)
+		 */
+		units_id: {
+			type: DataTypes.INTEGER
 		}
 	},  
 	{
 		tableName: 'users',
 		timestamps: false, /* false para não criar colunas createdAt e updateAt no banco */
 	})
+
+	User.associate = (models) => {
+		User.belongsTo(models.Unit, { foreignKey: 'units_id' })
+	}
     
 	return User
 }
