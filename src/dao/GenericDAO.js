@@ -30,8 +30,8 @@ module.exports = class GenericDAO {
 
 
 	/* método que carrega dados da tabela associativa enviroment_types_has_questions */
-	loadAssociatedItems(models, questionId) {
-		return models.EnviromentTypeQuestion.findAll({
+	loadAssociatedItems(model, questionId) {
+		return model.findAll({
 			include: [{
 				model: models.Question,
 				require: true  
