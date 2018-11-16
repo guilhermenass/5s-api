@@ -52,6 +52,14 @@ module.exports = (sequelize, DataTypes) => {
          */
 		current_responsible: {
 			type: DataTypes.INTEGER
+		},
+
+		/**
+		 * Verifica se o registro está ativo (técnica de exclusão lógica)
+		 */
+		is_active: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: true
 		}
 	},  
 	{

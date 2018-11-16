@@ -16,18 +16,18 @@ module.exports = class GenericDAO {
     
 	/* método genérico para retornar todos os dados de acordo com o model e sem condicionais */
 	load(model) {
-		return model.findAll({})
+		return model.findAll({
+			where: { 
+				is_active: true
+			}
+		})
 	}
 
 	/* método que carrega dados de acordo com o e-mail */
 	loadByEmail(model, email) {
 		return model.findOne({ where: { email: email }} )
 	}                                                                                                                                   
-    
-	/* método que carrega por um id especifico */
-	loadById() {
-    
-	}
+
 
 	/* método que carrega dados da tabela associativa enviroment_types_has_questions */
 	loadAssociatedItems(models, questionId) {
@@ -45,6 +45,9 @@ module.exports = class GenericDAO {
 	/* método que busca os usuários sem o atributo senha */
 	loadWithoutPassword(model) {
 		return model.findAll({
+			where: {
+				is_active: true
+			},
 			attributes: { exclude: ['password'] }
 		})
 	}
@@ -60,7 +63,9 @@ module.exports = class GenericDAO {
             inner join enviroments env on env.id = e.enviroments_id
             inner join audits a on a.id = e.audits_id
 			left join users u on u.id = e.users_id
-			where e.users_id = ${appraiserId} and e.status != 1 and e.current_responsible = ${appraiserId}`,
+			where e.users_id = ${appraiserId} and e.status != 1 
+			and e.current_responsible = ${appraiserId}
+			and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
@@ -76,29 +81,36 @@ module.exports = class GenericDAO {
 			inner join enviroments env on env.id = e.enviroments_id
 			inner join audits a on a.id = e.audits_id
 			left join users u on u.id = e.users_id
-			where env.users_id = ${responsibleId} and e.status = 1 and e.current_responsible = ${responsibleId}`,
+			where env.users_id = ${responsibleId}
+			and e.status = 1 and e.current_responsible = ${responsibleId}
+			and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT }
 		)
 	}
 
 	loadEnviromentsTypeByUnit(unitId) {
 		return db.sequelize.query(
-			'select distinct et.name, et.id from enviroments e ' +
-            'inner join enviroment_types et on et.id = e.enviroment_types_id ' +
-            'where e.units_id = ' + unitId,
+			`select distinct et.name, et.id from enviroments e ' 
+            'inner join enviroment_types et on et.id = e.enviroment_types_id ' 
+			'where e.units_id = ' ${unitId}
+			'and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT })
 	}
 
 	/**
-	 * 
+	 * Método genérico para exclusão lógica dos dados
 	 * @param {Model do banco de dados} model 
 	 * @param {Identificador do registro que será deletado} id 
 	 * @param {Se for nula, pega a coluna id, se não for, pega o parametro passado} paramName 
 	 */
 	remove(model, id) {
-		return model.destroy({
-			where: { 
-				id : id
+		return model.update(
+			{
+				is_active: false
+			},
+			{
+			where: {
+				id: id
 			}
 		})
 	}
@@ -115,7 +127,6 @@ module.exports = class GenericDAO {
 			}
 		})
 	}
-
 
 	/* atualiza dados de uma entidade de acordo com um id */
 	update(model, entity) {
