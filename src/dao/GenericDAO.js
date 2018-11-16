@@ -97,6 +97,16 @@ module.exports = class GenericDAO {
 			{ type: db.sequelize.QueryTypes.SELECT })
 	}
 
+	loadResponsiblesByUnit(unitId) {
+		return db.sequelize.query(
+			`select u.id, u.name from users u
+			 where units_id = ${unitId}
+			 and profile > 3
+			 and is_active = true`,
+			{ type: db.sequelize.QueryTypes.SELECT}
+		)
+	}
+
 	/**
 	 * Método genérico para exclusão lógica dos dados
 	 * @param {Model do banco de dados} model 

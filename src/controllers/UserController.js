@@ -79,6 +79,16 @@ module.exports = class UserController {
 		})
 	}
 
+	loadResponsiblesByUnit(unitId) {
+		this.dao.loadResponsiblesByUnit(unitId)
+		.then(users => {
+			return this.res.json(users)
+		})
+		.catch((error) => {
+			return this.res.status(500).json({ errorDetails: error })
+		})
+	}
+
 	remove() {
 		this.dao.remove(models.User, this.req.params.id)
 		.then((deletedRecord) => {
