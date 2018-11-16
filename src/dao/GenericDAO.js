@@ -16,7 +16,11 @@ module.exports = class GenericDAO {
     
 	/* método genérico para retornar todos os dados de acordo com o model e sem condicionais */
 	load(model) {
-		return model.findAll({})
+		return model.findAll({
+			where: { 
+				is_active: true
+			}
+		})
 	}
 
 	/* método que carrega dados de acordo com o e-mail */
@@ -41,6 +45,9 @@ module.exports = class GenericDAO {
 	/* método que busca os usuários sem o atributo senha */
 	loadWithoutPassword(model) {
 		return model.findAll({
+			where: {
+				is_active: true
+			},
 			attributes: { exclude: ['password'] }
 		})
 	}

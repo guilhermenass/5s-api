@@ -8,6 +8,9 @@ module.exports = class EnviromentDAO {
 	/** Carrega todas os ambientes, com inner join com */
 	load() {
 		return models.Enviroment.findAll({
+			where: {
+				is_active: true
+			},
 			include: [models.Unit, models.User, models.EnviromentType]
 		})
 	}
