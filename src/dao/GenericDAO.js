@@ -23,11 +23,7 @@ module.exports = class GenericDAO {
 	loadByEmail(model, email) {
 		return model.findOne({ where: { email: email }} )
 	}                                                                                                                                   
-    
-	/* método que carrega por um id especifico */
-	loadById() {
-    
-	}
+
 
 	/* método que carrega dados da tabela associativa enviroment_types_has_questions */
 	loadAssociatedItems(questionId) {
