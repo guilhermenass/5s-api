@@ -89,7 +89,7 @@ module.exports = class Question {
 	}
 
 	getRelatedItems(question) {
-		this.dao.loadAssociatedItems(question.id)
+		this.dao.loadAssociatedItems(models, question.id)
 		.then(questions => {
 			return this.res.status(200).json(questions)
 		})
