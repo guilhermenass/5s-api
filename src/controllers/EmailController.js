@@ -160,7 +160,7 @@ module.exports = class EmailController {
 			service: 'gmail',
 			auth: {
 				user: 'suportesenai5s@gmail.com',
-				pass: 'senai@2018'
+				pass: process.env.EMAIL_PASSWORD
 			}
 		})
 	}
