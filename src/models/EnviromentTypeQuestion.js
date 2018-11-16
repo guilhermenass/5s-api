@@ -1,9 +1,20 @@
+/**
+ * Tabela associativa
+ */
 module.exports = (sequelize, DataTypes) => {
 	var EnviromentTypeQuestion = sequelize.define('EnviromentTypeQuestion', {
+
+		/**
+		 * Tipo de ambiente relacionado
+		 */
 		enviroment_types_id: {
 			primaryKey: true,
 			type: DataTypes.INTEGER
 		},
+
+		/**
+		 * Questão relacionada
+		 */
 		questions_id: {
 			primaryKey: true,
 			type: DataTypes.INTEGER

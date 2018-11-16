@@ -8,6 +8,9 @@ module.exports = class AuditDAO {
 			order: [
 				['id', 'DESC']
 			],
+			where: {
+				is_active: true
+			},
 			include:
             [{
             	model: models.Evaluation,
