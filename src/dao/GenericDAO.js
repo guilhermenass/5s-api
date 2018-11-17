@@ -1,4 +1,5 @@
 var db = require('../models/index')
+var models = require('../models')
 
 module.exports = class GenericDAO {
 
@@ -48,6 +49,10 @@ module.exports = class GenericDAO {
 			where: {
 				is_active: true
 			},
+			include: [{
+				model: models.Unit,
+				attributes: ['name']
+			}],
 			attributes: { exclude: ['password'] }
 		})
 	}
