@@ -91,7 +91,7 @@ module.exports = class GenericDAO {
 	loadEnviromentsTypeByUnit(unitId) {
 		return db.sequelize.query(
 			`select distinct et.name, et.id from enviroments e
-             inner join enviroment_types et on et.id = e.enviroment_types_id
+             inner join enviroment_types et on et.id = e.enviroment_types_id 
 			 where e.units_id = ${unitId}
 			 and e.is_active = true`,
 			{ type: db.sequelize.QueryTypes.SELECT })
