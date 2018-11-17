@@ -27,11 +27,15 @@ router.post('/evaluations/emailSuccessful', (req, res) => {
 })
 
 router.put('/evaluations/:id', function(req, res) {
-	new evaluationController(req, res).updateEvaluation(req.body.status, req.body.responsibleId)
+	new evaluationController(req, res).updateEvaluation(req.body.updateEvaluationDto)
 })
 
 router.post('/evaluations/emailWithNonCompliances', (req, res) => {
 	new evaluationController(req, res).sendEmailWithNonCompliances(req.body.nonCompliances)
+})
+
+router.get('/evaluations/:evaluationId', (req, res) => {
+	new evaluationController(req, res).verifyEvaluationStatus(req.params.evaluationId);
 })
 
 module.exports = router;

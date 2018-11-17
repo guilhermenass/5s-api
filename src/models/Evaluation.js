@@ -60,6 +60,13 @@ module.exports = (sequelize, DataTypes) => {
 		is_active: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: true
+		},
+
+		/**
+		 * Nota da avaliação
+		 */
+		grade: {
+			type: DataTypes.INTEGER
 		}
 	},  
 	{
