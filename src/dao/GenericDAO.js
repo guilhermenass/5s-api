@@ -25,7 +25,12 @@ module.exports = class GenericDAO {
 
 	/* método que carrega dados de acordo com o e-mail */
 	loadByEmail(model, email) {
-		return model.findOne({ where: { email: email }} )
+		return model.findOne({
+			where: { 
+				email: email,
+				is_active: true
+			}
+		})
 	}                                                                                                                                   
 
 

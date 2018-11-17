@@ -21,7 +21,6 @@ app.use('/', express.static(__dirname + '/views'))
 app.use(jwt({ secret: process.env.SECRET_KEY}).unless({
 	path: [
 		'/authenticate',
-		'/authenticateApp', 
 		'/verifyEmail']
 	}))
 
