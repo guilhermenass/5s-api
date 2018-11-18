@@ -73,7 +73,7 @@ module.exports = class GenericDAO {
             FROM evaluations e
             inner join enviroments env on env.id = e.enviroments_id
             inner join audits a on a.id = e.audits_id
-			left join users u on u.id = e.users_id
+			left join users u on u.id = env.users_id
 			where e.users_id = ${appraiserId} and e.status != 1 
 			and e.current_responsible = ${appraiserId}
 			and e.is_active = true`,
