@@ -1,10 +1,25 @@
 var db = require('../models/index')
-const Op = db.Sequelize;
 const models = require('../models')
 
 module.exports = class GenericDAO {
 
 	constructor() {}
+	
+	/**
+	 * Verifica se o usuário é responsável por algum ambiente ou está com pendência de avaliação
+	 * @param {Identificador do usuário} userId 
+	 */
+	async checkUserPending(userId) {
+		return db.sequelize.query(
+			`SELECT
+			(select count(DISTINCT users_id) from enviroments where users_id = ${userId}) as enviromentsCount,
+			(select count(DISTINCT current_responsible) from evaluations where status != 2 and current_responsible = ${userId}) as evaluationsCount,
+			env.name as enviroment_name
+			from evaluations eva
+			inner join enviroments env on env.id = eva.enviroments_id`,
+			{type: db.sequelize.QueryTypes.SELECT}
+		)
+	}
 
 	/* método genérico de save */
 	save(model, entity) {
