@@ -1,5 +1,6 @@
 var db = require('../models/index')
-var models = require('../models')
+const Op = db.Sequelize;
+
 
 module.exports = class GenericDAO {
 
@@ -153,26 +154,29 @@ module.exports = class GenericDAO {
 		return model.update(entity, { where: { id: entity.id } })
 	}
 
-	/* atualiza o status da avaliação */
-	updateEvaluation(model, evaluationId, responsibleId, status) {
-		return model.update(
-		{
-			status: status,
-			date: new Date(),
-			current_responsible: responsibleId
-		},
+	/* atualiza o status, nota, revisor atual e nota da avaliação */
+	updateEvaluation(model, evaluationId, evaluation) {
+		return model.update(evaluation,
 		{
 			where: { 
 				id: evaluationId
 			} 
 		})
 	}
-
+	
 	/* método responsável por atualizar a senha do usuário com criptografia */
 	updatePassword(model, userId, password) {
 		return model.update({ password: password },
 		{ 
 			where: { id: userId }
+		})
+	}
+
+	verifyEvaluationStatus(model, evaluationId) {
+		return model.findOne({
+			where: {
+				id: evaluationId
+			}
 		})
 	}
 }

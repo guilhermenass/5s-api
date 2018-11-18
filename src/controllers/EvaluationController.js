@@ -165,9 +165,10 @@ module.exports = class EvaluationController {
 		}
 	}
 
-	updateEvaluation(status, responsibleId) {
-		let message = this.getMessage(status);
-		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, responsibleId, status)
+	updateEvaluation(evaluationDto) {
+		let message = this.getMessage(evaluationDto.status);
+		let evaluation = this.mountEvaluation(evaluationDto);
+		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, evaluation)
 		.then(() => {
 			return this.res.status(200).json({
 				type: 'success',
@@ -175,7 +176,7 @@ module.exports = class EvaluationController {
 			})
 		})
 		.catch((error) => {
-			return this.req.status(500).json({
+			return this.res.status(500).json({
 				type: 'error',
 				message: 'Ocorreu um erro ao atualizar o status',
 				errorDetails: error
@@ -198,6 +199,36 @@ module.exports = class EvaluationController {
 			message = "Avaliação está disponível para reavaliação do avaliador";
 		
 		return message;
+	}
+
+	verifyEvaluationStatus(evaluationId) {
+		return this.dao.verifyEvaluationStatus(models.Evaluation, evaluationId)
+		.then(evaluation => {
+			return this.res.status(200).json(evaluation)
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				type: 'error',
+				message: 'Ocorreu um erro ao consultar avaliação',
+				errorDetails: error
+			})
+		})
+	}
+
+	/**
+	 * Método para verificar se a nota foi gerada ou não.
+	 * Só deve atualizar a nota, se for a primeira avaliação.
+	 */
+	mountEvaluation(evaluationDto) {
+		var evaluation = {
+			status: evaluationDto.status,
+			date: new Date(),
+			current_responsible: evaluationDto.userId
+		}
+		if(evaluationDto.grade != null)
+			evaluation.grade = evaluationDto.grade;
+		
+		return evaluation;
 	}
 }
 
