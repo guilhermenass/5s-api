@@ -1,6 +1,6 @@
 var db = require('../models/index')
 const Op = db.Sequelize;
-
+const models = require('../models')
 
 module.exports = class GenericDAO {
 
