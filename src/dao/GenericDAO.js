@@ -1,6 +1,7 @@
 var db = require('../models/index')
 const Op = db.Sequelize;
 
+
 module.exports = class GenericDAO {
 
 	constructor() {}
@@ -26,7 +27,12 @@ module.exports = class GenericDAO {
 
 	/* método que carrega dados de acordo com o e-mail */
 	loadByEmail(model, email) {
-		return model.findOne({ where: { email: email }} )
+		return model.findOne({
+			where: { 
+				email: email,
+				is_active: true
+			}
+		})
 	}                                                                                                                                   
 
 
@@ -49,6 +55,10 @@ module.exports = class GenericDAO {
 			where: {
 				is_active: true
 			},
+			include: [{
+				model: models.Unit,
+				attributes: ['name']
+			}],
 			attributes: { exclude: ['password'] }
 		})
 	}

@@ -47,8 +47,4 @@ router.get('/newPassword/:token', function(req, res){
 	new userController(req, res).createNewPassword()
 })
 
-router.post('/authenticateApp', function(req, res) {
-	new authController(req, res).authenticateApp()
-})
-
 module.exports = router
