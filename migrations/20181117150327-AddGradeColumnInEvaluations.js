@@ -6,7 +6,7 @@ module.exports = {
       'evaluations',
       'grade',
       {
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       }
     )
   },

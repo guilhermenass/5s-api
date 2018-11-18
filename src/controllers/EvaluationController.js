@@ -166,9 +166,9 @@ module.exports = class EvaluationController {
 	}
 
 	updateEvaluation(evaluationDto) {
-		console.log('evaluationDto',evaluationDto)
 		let message = this.getMessage(evaluationDto.status);
-		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, evaluationDto)
+		let evaluation = this.mountEvaluation(evaluationDto);
+		return this.dao.updateEvaluation(models.Evaluation, this.req.params.id, evaluation)
 		.then(() => {
 			return this.res.status(200).json({
 				type: 'success',
@@ -213,6 +213,22 @@ module.exports = class EvaluationController {
 				errorDetails: error
 			})
 		})
+	}
+
+	/**
+	 * Método para verificar se a nota foi gerada ou não.
+	 * Só deve atualizar a nota, se for a primeira avaliação.
+	 */
+	mountEvaluation(evaluationDto) {
+		var evaluation = {
+			status: evaluationDto.status,
+			date: new Date(),
+			current_responsible: evaluationDto.userId
+		}
+		if(evaluationDto.grade != null)
+			evaluation.grade = evaluationDto.grade;
+		
+		return evaluation;
 	}
 }
 

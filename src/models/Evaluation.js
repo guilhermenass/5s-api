@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
 		 * Nota da avaliação
 		 */
 		grade: {
-			type: DataTypes.INTEGER
+			type: DataTypes.DOUBLE
 		}
 	},  
 	{

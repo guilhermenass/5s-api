@@ -145,22 +145,15 @@ module.exports = class GenericDAO {
 	}
 
 	/* atualiza o status, nota, revisor atual e nota da avaliação */
-	updateEvaluation(model, evaluationId, evaluationDto) {
-		return model.update(
-		{
-			status: evaluationDto.status,
-			date: new Date(),
-			current_responsible: evaluationDto.responsibleId,
-			grade: evaluationDto.grade
-		},
+	updateEvaluation(model, evaluationId, evaluation) {
+		return model.update(evaluation,
 		{
 			where: { 
-				id: evaluationId,
-				grade: null
+				id: evaluationId
 			} 
 		})
 	}
-
+	
 	/* método responsável por atualizar a senha do usuário com criptografia */
 	updatePassword(model, userId, password) {
 		return model.update({ password: password },
@@ -170,7 +163,7 @@ module.exports = class GenericDAO {
 	}
 
 	verifyEvaluationStatus(model, evaluationId) {
-		return model.findAll({
+		return model.findOne({
 			where: {
 				id: evaluationId
 			}
