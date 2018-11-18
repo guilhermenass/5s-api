@@ -104,7 +104,7 @@ module.exports = class UserController {
 		if(userPending) {
 			let msg = this.getUserPendingMsg(userPending);
 			return this.res.status(400).json({
-				type: 'success',
+				type: 'error',
 				message: msg
 			})
 		} else {
