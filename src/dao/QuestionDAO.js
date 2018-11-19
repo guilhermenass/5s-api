@@ -9,8 +9,7 @@ module.exports = class QuestionDAO {
             inner join questions q on q.id = ethq.questions_id
 			where ethq.enviroment_types_id = ${enviromentTypeId}
 			and q.is_active = true`,
-            { type: db.sequelize.QueryTypes.SELECT }
-        )
+            { type: db.sequelize.QueryTypes.SELECT })
     }
 
 	/**Reavaliação */

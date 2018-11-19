@@ -6,6 +6,22 @@ module.exports = class GenericDAO {
 
 	constructor() {}
 
+	/**
+	 * Método responsável pelo filtro da tela de relatórios
+	 * @param {Identificador da auditoria} auditId 
+	 */
+	filter(auditId) {
+		return db.sequelize.query(
+			`select env.block, env.name as enviroment_name, eva.status, eva.grade, eva.date, u.name as appraiser, a.name as responsible
+			from evaluations eva
+			right join enviroments env on env.id = eva.enviroments_id
+			right join users u on u.id = eva.users_id 
+			right join users a on a.id = env.users_id 
+			where audits_id = ${auditId}`,
+			{type: db.sequelize.QueryTypes.SELECT}
+		)
+	}
+
 	/* método genérico de save */
 	save(model, entity) {
 		return model.create(entity)

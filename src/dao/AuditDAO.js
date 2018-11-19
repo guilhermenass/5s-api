@@ -1,4 +1,5 @@
 var models = require('../models')
+var db = require('../models/index')
 module.exports = class AuditDAO {
 
 	constructor() { }
@@ -30,5 +31,15 @@ module.exports = class AuditDAO {
                 }]        
             }]
 		})
+	}
+
+	loadAuditsByUnit(unitId) {
+		return db.sequelize.query(
+			`select au.id, au.title from enviroments env 
+			inner join evaluations eval on eval.enviroments_id = env.id
+			inner join audits au on au.id = eval.audits_id
+			where env.units_id = ${unitId}`,
+			{type: db.sequelize.QueryTypes.SELECT}
+		)
 	}
 }
