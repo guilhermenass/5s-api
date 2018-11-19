@@ -32,7 +32,8 @@ app.use([
 	routes.enviromentsRoutes,
 	routes.questionsRoutes,
 	routes.evaluationRoutes,
-	routes.emailRoutes
+	routes.emailRoutes,
+	routes.reportRoutes
 ])
 
 app.listen(process.env.PORT || 4000, function(){
