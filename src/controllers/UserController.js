@@ -11,20 +11,30 @@ module.exports = class UserController {
 		this.dao = new genericDAO()
 	}
 
+	async checkUserPending(userId) {
+		return await this.dao.checkUserPending(userId)
+		.then(res => {
+			return res[0];
+		})
+		.catch((error) => {
+			console.log(error)
+		})
+	}
+
 	save(user) {
 		this.dao.save(models.User, user)
-			.then((res) => {
-				return this.res.status(201).json({
-					id: res.id,
-					type: 'success', 
-					message: 'Usuário salvo com sucesso!'
-				})
+		.then((res) => {
+			return this.res.status(201).json({
+				id: res.id,
+				type: 'success', 
+				message: 'Usuário salvo com sucesso!'
 			})
-			.catch((error) => {
-				return this.res.status(500).json({
-					type: 'error', message: 'Ocorreu um erro ao salvar!', errorDetails: error
-				})
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				type: 'error', message: 'Ocorreu um erro ao salvar!', errorDetails: error
 			})
+		})
 	}
 
 	update(user) {
@@ -89,28 +99,45 @@ module.exports = class UserController {
 		})
 	}
 
-	remove() {
-		this.dao.remove(models.User, this.req.params.id)
-		.then((deletedRecord) => {
-			if (deletedRecord) {
-				return this.res.status(200).json({
-					type: 'success',
-					message: 'Removido com sucesso!'
-				})
-			} else {
-				return this.res.status(404).json({
-					type: 'error', 
-					message: 'Registro não encontrado!'
-				})
-			}
-		})
-		.catch((error) => {
-			return this.res.status(500).json({
+	async remove() {
+		let userPending = await this.checkUserPending(this.req.params.id)
+		if(userPending) {
+			let msg = this.getUserPendingMsg(userPending);
+			return this.res.status(400).json({
 				type: 'error',
-				message: 'Ocorreu um erro ao tentar remover',
-				errorDetails: error
+				message: msg
 			})
-		})
+		} else {
+			this.dao.remove(models.User, this.req.params.id)
+			.then((deletedRecord) => {
+				if (deletedRecord) {
+					return this.res.status(200).json({
+						type: 'success',
+						message: 'Removido com sucesso!'
+					})
+				} else {
+					return this.res.status(404).json({
+						type: 'error', 
+						message: 'Registro não encontrado!'
+					})
+				}
+			})
+			.catch((error) => {
+				return this.res.status(500).json({
+					type: 'error',
+					message: 'Ocorreu um erro ao tentar remover',
+					errorDetails: error
+				})
+			})
+		}
+	}
+
+	getUserPendingMsg(userPending) {
+		if(userPending.evaluationscount > 0) {
+			return 'Este usuário não pode ser removido, porque tem avaliações pendentes para executar.'
+		} else {
+			return `Este usuário é responsável pelo ambiente ${userPending.enviroment_name}. Altere o responsável deste ambiente, para conseguir remover este usuário.`
+		}
 	}
 
 	generateHash(password) {
