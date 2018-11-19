@@ -10,6 +10,14 @@ router.get('/audits', function(req, res) {
 	new auditController(req, res).load()
 })
 
+router.get('/audits/report', function(req, res) {
+	new auditController(req, res).loadAuditsToReport()
+})
+
+router.get('/audits/:unitId', function(req, res) {
+	new auditController(req, res).loadAuditsByUnit(req.params.unitId);
+})
+
 router.put('/audits/:id', function(req, res){
 	new auditController(req, res).update(req.body)
 })

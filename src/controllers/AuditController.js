@@ -11,14 +11,38 @@ module.exports = class AuditController {
 
 	load() {
 		new auditDAO().load(models.Audit)
-			.then(audits => {
-				return this.res.json(audits)
+		.then(audits => {
+			return this.res.json(audits)
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				errorDetails: error
 			})
-			.catch((error) => {
-				return this.res.status(500).json({
-					errorDetails: error
-				})
+		})
+	}
+
+	loadAuditsByUnit(unitId){
+		new auditDAO().loadAuditsByUnit(unitId)
+		.then(res => {
+			return this.res.status(200).json(res)
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				errorDetails: error
 			})
+		})
+	}
+
+	loadAuditsToReport() {
+		this.dao.load(models.Audit)
+		.then(audits => {
+			return this.res.json(audits)
+		})
+		.catch((error) => {
+			return this.res.status(500).json({
+				errorDetails: error
+			})
+		})
 	}
 
 	save(audit){

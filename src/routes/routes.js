@@ -6,6 +6,7 @@ const questionsRoutes = require('./question-routes')
 const auditRoutes = require('./audit-routes')
 const evaluationRoutes = require('./evaluation-routes')
 const emailRoutes = require('./email-routes')
+const reportRoutes = require('./report-routes');
 
 let routes = {
 	usersRoutes: usersRoutes,
@@ -15,7 +16,8 @@ let routes = {
 	questionsRoutes: questionsRoutes,
 	auditRoutes: auditRoutes,
 	evaluationRoutes: evaluationRoutes,
-	emailRoutes: emailRoutes
+	emailRoutes: emailRoutes,
+	reportRoutes: reportRoutes
 }
 
 module.exports = routes
