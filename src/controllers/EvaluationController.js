@@ -9,15 +9,19 @@ module.exports = class EvaluationController {
 		this.dao = new genericDAO()
 	}
 
-	save(obj) {
-		var evaluationDto = this.createDto(obj)
+	save(audit) {
+		let evaluationsToRemove = audit.evaluations.filter(evaluation => {
+			return evaluation.id != null || evaluation.id != undefined
+		})
+		this.removeAllEvaluations(evaluationsToRemove);
+		var evaluationDto = this.createDto(audit)
 		this.dao.bulkCreate(models.Evaluation, evaluationDto)
-			.then((res) => {
-				return this.res.json(res)
-			})
-			.catch((error) => {
-				console.log(error)
-			})
+		.then((res) => {
+			return this.res.json(res)
+		})
+		.catch((error) => {
+			console.log(error)
+		})
 	}
 
 	loadByAppraiserId(appraiserId) {
@@ -46,15 +50,18 @@ module.exports = class EvaluationController {
 
 	createDto(audit) {
 		let auditDto = []
-		audit.evaluations.forEach(evaluation => {
-			auditDto.push({
-				enviroments_id: evaluation.environments_id,
-				users_id: evaluation.users_id,
-				audits_id: audit.id,
-				current_responsible: evaluation.users_id,
-				status: 0
-			})
+			audit.evaluations.forEach(evaluation => {
+			if(!auditDto.includes(evaluation.users_id && evaluation.enviroments_id)) {
+				auditDto.push({
+					enviroments_id: evaluation.environments_id,
+					users_id: evaluation.users_id,
+					audits_id: audit.id,
+					current_responsible: evaluation.users_id,
+					status: 0
+				})
+			}
 		})
+		console.log('auditdto', auditDto)
 		return auditDto
 	}
 
@@ -229,6 +236,20 @@ module.exports = class EvaluationController {
 			evaluation.grade = evaluationDto.grade;
 		
 		return evaluation;
+	}
+
+	removeAllEvaluations(evaluations) {
+		if(evaluations) {
+			evaluations.forEach(evaluation => {
+				this.dao.remove(models.Evaluation, evaluation.id)
+				.then(res => {
+					console.log('ok')	
+				})
+				.catch((error) => {
+					console.log('err', error)
+				})
+			})
+		}
 	}
 }
 
