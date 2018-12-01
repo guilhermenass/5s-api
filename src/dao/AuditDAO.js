@@ -35,10 +35,11 @@ module.exports = class AuditDAO {
 
 	loadAuditsByUnit(unitId) {
 		return db.sequelize.query(
-			`select au.id, au.title from enviroments env 
+			`select distinct on (au.id) au.id, au.title from enviroments env 
 			inner join evaluations eval on eval.enviroments_id = env.id
 			inner join audits au on au.id = eval.audits_id
-			where env.units_id = ${unitId}`,
+			where env.units_id = ${unitId}
+			and au.is_active = true`,
 			{type: db.sequelize.QueryTypes.SELECT}
 		)
 	}
