@@ -50,19 +50,18 @@ module.exports = class EvaluationController {
 
 	createDto(audit) {
 		let auditDto = []
-		if(audit.evaluations.users_id) {
 			audit.evaluations.forEach(evaluation => {
-				if(!evaluation.includes(evaluation.users_id && evaluation.enviroments_id)) {
-					auditDto.push({
-						enviroments_id: evaluation.environments_id,
-						users_id: evaluation.users_id,
-						audits_id: audit.id,
-						current_responsible: evaluation.users_id,
-						status: 0
-					})
-				}
-			})
-		}
+			if(!auditDto.includes(evaluation.users_id && evaluation.enviroments_id)) {
+				auditDto.push({
+					enviroments_id: evaluation.environments_id,
+					users_id: evaluation.users_id,
+					audits_id: audit.id,
+					current_responsible: evaluation.users_id,
+					status: 0
+				})
+			}
+		})
+		console.log('auditdto', auditDto)
 		return auditDto
 	}
 
