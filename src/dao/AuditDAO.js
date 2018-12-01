@@ -1,8 +1,9 @@
 var models = require('../models')
 var db = require('../models/index')
 module.exports = class AuditDAO {
-
+	
 	constructor() { }
+
 
 	load(model) {
 		return model.findAll({
@@ -14,7 +15,8 @@ module.exports = class AuditDAO {
 			},
 			include:
             [{
-            	model: models.Evaluation,
+				model: models.Evaluation,
+				where: { is_active: true },
             	attributes: ['id', 'date'],
             	include: 
                 [{
