@@ -203,10 +203,10 @@ module.exports = class GenericDAO {
 		})
 	}
 
-	verifyEvaluationStatus(model, evaluationId) {
-		return model.findOne({
-			where: {
-				id: evaluationId
+	removeFromDb(model, id) {
+		return model.destroy({
+			where: { 
+				id : id
 			}
 		})
 	}
