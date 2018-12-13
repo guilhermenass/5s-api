@@ -17,7 +17,7 @@ module.exports = class AuditDAO {
             [{
 				model: models.Evaluation,
 				where: { is_active: true },
-            	attributes: ['id', 'date'],
+            	attributes: ['id', 'date','status'],
             	include: 
                 [{
                 	model: models.Enviroment,
