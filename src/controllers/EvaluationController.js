@@ -9,15 +9,15 @@ module.exports = class EvaluationController {
 		this.dao = new genericDAO()
 	}
 
-	save(obj) {
-		var evaluationDto = this.createDto(obj)
+	async save(audit) {
+		var evaluationDto = this.createDto(audit)
 		this.dao.bulkCreate(models.Evaluation, evaluationDto)
-			.then((res) => {
-				return this.res.json(res)
-			})
-			.catch((error) => {
-				console.log(error)
-			})
+		.then((res) => {
+			return this.res.json(res)
+		})
+		.catch((error) => {
+			console.log(error)
+		})
 	}
 
 	loadByAppraiserId(appraiserId) {
@@ -47,13 +47,13 @@ module.exports = class EvaluationController {
 	createDto(audit) {
 		let auditDto = []
 		audit.evaluations.forEach(evaluation => {
-			auditDto.push({
-				enviroments_id: evaluation.environments_id,
-				users_id: evaluation.users_id,
-				audits_id: audit.id,
-				current_responsible: evaluation.users_id,
-				status: 0
-			})
+				auditDto.push({
+					enviroments_id: evaluation.environments_id,
+					users_id: evaluation.users_id,
+					audits_id: audit.id,
+					current_responsible: evaluation.users_id,
+					status: 0
+				})
 		})
 		return auditDto
 	}
@@ -229,6 +229,19 @@ module.exports = class EvaluationController {
 			evaluation.grade = evaluationDto.grade;
 		
 		return evaluation;
+	}
+
+	async remove(evaluationId) {
+		this.dao.removeFromDb(models.Evaluation, evaluationId)
+		.then((res) => {
+			return this.res.status(200).json({
+				type: 'success',
+				message: 'Removido com sucesso!'
+			})
+		})
+		.catch((error) => {
+			return this.res.status(500).json({msg: error})
+		})
 	}
 }
 

@@ -32,7 +32,7 @@ module.exports = class GenericDAO {
 			right join enviroments env on env.id = eva.enviroments_id
 			right join users u on u.id = eva.users_id 
 			right join users a on a.id = env.users_id 
-			where audits_id = ${auditId}`,
+			where eva.audits_id = ${auditId} and eva.is_active = true`,
 			{type: db.sequelize.QueryTypes.SELECT}
 		)
 	}
@@ -203,10 +203,10 @@ module.exports = class GenericDAO {
 		})
 	}
 
-	verifyEvaluationStatus(model, evaluationId) {
-		return model.findOne({
-			where: {
-				id: evaluationId
+	removeFromDb(model, id) {
+		return model.destroy({
+			where: { 
+				id : id
 			}
 		})
 	}

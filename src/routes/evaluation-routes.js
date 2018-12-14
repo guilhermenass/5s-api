@@ -38,4 +38,8 @@ router.get('/evaluations/:evaluationId', (req, res) => {
 	new evaluationController(req, res).verifyEvaluationStatus(req.params.evaluationId);
 })
 
+router.delete('/evaluations/:evaluationId', (req, res) => {
+	new evaluationController(req, res).remove(req.params.evaluationId);
+})
+
 module.exports = router;
